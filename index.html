@@ -276,14 +276,25 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-mu
 <script>
 // ── CHARGEMENT CSV ──
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.trim());
+  const lines = text.replace(/^﻿/, '').trim().split('\n');
+  const delim = lines[0].includes(';') ? ';' : ',';
+  const keyMap = {
+    'step':'step','zone':'zone','etape':'etape','type':'type',
+    'tache':'tache','statut':'statut','responsable':'resp','resp':'resp',
+    'datebutoire':'dateButoire','datedebut':'deb','deb':'deb',
+    'datefin':'fin','fin':'fin','qty':'qty','note':'note',
+    'fournisseurs':'fournisseur','fournisseur':'fournisseur'
+  };
+  const headers = lines[0].split(delim).map(h => {
+    const norm = h.trim().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,'');
+    return keyMap[norm] || h.trim();
+  });
   return lines.slice(1).filter(l => l.trim()).map(line => {
     const cols = [];
     let cur = '', inQ = false;
     for (let i = 0; i < line.length; i++) {
       if (line[i] === '"') { inQ = !inQ; }
-      else if (line[i] === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else if (line[i] === delim && !inQ) { cols.push(cur.trim()); cur = ''; }
       else { cur += line[i]; }
     }
     cols.push(cur.trim());
