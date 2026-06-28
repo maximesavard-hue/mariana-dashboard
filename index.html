@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projet Balcon Mariana — Suivi de réalisation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0F1923;
+  --ink-soft:   #4A5568;
+  --ink-muted:  #8A9BB0;
+  --canvas:     #F7F9FC;
+  --white:      #FFFFFF;
+  --rule:       #E2E8F0;
+  --blue:       #1A56DB;
+  --blue-soft:  #EBF2FF;
+  --green:      #057A55;
+  --green-soft: #DEF7EC;
+  --amber:      #92400E;
+  --amber-soft: #FEF3C7;
+  --red:        #9B1C1C;
+  --red-soft:   #FDE8E8;
+  --grey-soft:  #F3F4F6;
+  --grey:       #374151;
+  --orange:     #C05621;
+  --orange-soft:#FFF7ED;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--canvas); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+/* HEADER */
+.site-header {
+  background: var(--white); border-bottom: 1px solid var(--rule);
+  padding: 0 32px; position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; height: 56px;
+}
+.logo { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+.logo span { color: var(--blue); }
+.header-date { font-size: 11px; color: var(--ink-muted); font-family: 'DM Mono', monospace; }
+
+/* HERO */
+.hero { background: var(--white); border-bottom: 1px solid var(--rule); padding: 36px 32px 28px; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+.hero h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+.hero-addr { font-size: 12px; color: var(--ink-muted); font-family: 'DM Mono', monospace; margin-bottom: 24px; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi { background: var(--canvas); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 18px; }
+.kpi-n { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 3px; }
+.kpi-l { font-size: 10px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* PROGRESS */
+.prog-wrap { padding: 20px 32px 0; background: var(--white); border-bottom: 1px solid var(--rule); padding-bottom: 20px; }
+.prog-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; color: var(--ink-soft); margin-bottom: 7px; }
+.prog-track { height: 7px; background: var(--rule); border-radius: 99px; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, #1A56DB, #38BDF8); border-radius: 99px; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+
+/* MAIN */
+.main { padding: 24px 32px 60px; }
+
+/* SECTION HEADERS */
+.sec-head {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-muted); padding-bottom: 10px; margin: 28px 0 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* STATUS TABS */
+.status-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.stab {
+  padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid transparent; transition: all 0.15s; user-select: none;
+}
+.stab.active-tab { border-color: var(--blue); background: var(--blue-soft); color: var(--blue); }
+.stab.inactive-tab { border-color: var(--rule); background: var(--white); color: var(--ink-muted); }
+.stab:hover:not(.active-tab) { border-color: var(--ink-muted); color: var(--ink-soft); }
+
+/* ZONES */
+.zones { display: flex; flex-direction: column; gap: 6px; }
+.zone-block { background: var(--white); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.zone-block:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.zone-hdr {
+  display: grid; grid-template-columns: 36px 1fr 160px 110px 60px;
+  align-items: center; padding: 14px 18px; cursor: pointer; gap: 10px; user-select: none;
+}
+.zone-step { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-muted); text-align: center; }
+.zone-name { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.chev { font-size: 9px; color: var(--ink-muted); transition: transform 0.2s; display: inline-block; }
+.chev.open { transform: rotate(90deg); }
+.zone-dates { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--ink-soft); text-align: center; }
+.zone-count { font-size: 10px; color: var(--ink-muted); font-family: 'DM Mono', monospace; text-align: right; }
+
+/* TASKS INSIDE ZONE */
+.zone-tasks { display: none; border-top: 1px solid var(--rule); }
+.zone-tasks.open { display: block; }
+.tasks-hdr {
+  display: grid; grid-template-columns: 1fr 140px 90px 90px;
+  padding: 7px 18px 7px 52px; gap: 10px;
+  background: var(--canvas); border-bottom: 1px solid var(--rule);
+}
+.th { font-size: 9px; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.th.c { text-align: center; }
+.task-row {
+  display: grid; grid-template-columns: 1fr 140px 90px 90px;
+  align-items: center; padding: 9px 18px 9px 52px; gap: 10px;
+  border-bottom: 1px solid var(--rule); transition: background 0.1s;
+}
+.task-row:last-child { border-bottom: none; }
+.task-row:hover { background: var(--canvas); }
+.task-n { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink); }
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.task-r { font-size: 10px; color: var(--ink-muted); text-align: center; }
+.task-d { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--ink-soft); text-align: center; }
+
+/* PILLS */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: 600; white-space: nowrap;
+}
+.s-fait    { background: var(--green-soft); color: var(--green); }
+.s-cours   { background: var(--amber-soft); color: var(--amber); }
+.s-bloque  { background: var(--red-soft);   color: var(--red); }
+.s-afaire  { background: var(--blue-soft);  color: var(--blue); }
+.s-valider { background: var(--orange-soft);color: var(--orange); }
+.s-annule  { background: var(--grey-soft);  color: var(--grey); }
+
+/* ACHATS TABLE */
+.achats-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 10px; overflow: hidden; border: 1px solid var(--rule); }
+.achats-table thead th {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-muted); background: var(--canvas); padding: 9px 14px;
+  border-bottom: 1px solid var(--rule); text-align: left;
+}
+.achats-table tbody td { font-size: 11px; padding: 9px 14px; border-bottom: 1px solid var(--rule); color: var(--ink); }
+.achats-table tbody tr:last-child td { border-bottom: none; }
+.achats-table tbody tr:hover td { background: var(--canvas); }
+.date-badge {
+  display: inline-block; padding: 2px 8px; background: var(--blue-soft);
+  color: var(--blue); border-radius: 99px; font-size: 10px;
+  font-family: 'DM Mono', monospace; font-weight: 600;
+}
+.date-badge.valider { background: var(--orange-soft); color: var(--orange); }
+.fournisseur { font-size: 10px; color: var(--ink-muted); }
+.qty-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-soft); text-align: right; }
+
+/* BUDGET */
+.budget-card {
+  background: var(--white); border: 1px solid var(--rule); border-radius: 12px;
+  padding: 24px; margin-bottom: 12px;
+}
+.budget-title { font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 16px; }
+.budget-bar-wrap { margin-bottom: 10px; }
+.budget-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-muted); margin-bottom: 6px; }
+.budget-track { height: 20px; background: var(--rule); border-radius: 6px; overflow: hidden; position: relative; }
+.budget-fill { height: 100%; background: linear-gradient(90deg, #057A55, #34D399); border-radius: 6px; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; padding-left: 10px; }
+.budget-fill-label { font-size: 10px; font-weight: 700; color: white; font-family: 'DM Mono', monospace; }
+.budget-amounts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+.budget-amt { text-align: center; }
+.budget-amt-n { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+.budget-amt-l { font-size: 10px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.budget-note { font-size: 11px; color: var(--ink-muted); font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); }
+
+/* LEGEND */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 18px;
+  background: var(--white); border: 1px solid var(--rule); border-radius: 10px; margin-top: 24px;
+}
+.leg-title { font-size: 10px; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; width: 100%; }
+.leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink-soft); }
+
+/* FOOTER */
+footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-muted); border-top: 1px solid var(--rule); font-family: 'DM Mono', monospace; }
+
+/* RESPONSIVE */
+@media (max-width: 680px) {
+  .site-header, .hero, .prog-wrap, .main { padding-left: 16px; padding-right: 16px; }
+  .hero h1 { font-size: 20px; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .zone-hdr { grid-template-columns: 28px 1fr 80px; }
+  .zone-dates, .zone-count { display: none; }
+  .task-row, .tasks-hdr { grid-template-columns: 1fr 70px; padding-left: 36px; }
+  .task-r, .task-d:last-child { display: none; }
+  .budget-amounts { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">Maillon Fort <span>Inc.</span></div>
+  <div class="header-date" id="hDate"></div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Suivi de réalisation</div>
+  <h1>Projet Balcon Mariana</h1>
+  <div class="hero-addr">📍 65 Bd des Alliés, Québec, QC G1L 1Y4</div>
+  <div class="kpis" id="kpis"></div>
+</section>
+
+<div class="prog-wrap">
+  <div class="prog-label"><span>Avancement global</span><span id="pct">—</span></div>
+  <div class="prog-track"><div class="prog-fill" id="pFill" style="width:0%"></div></div>
+</div>
+
+<div style="padding: 0 32px 20px; background: var(--white); border-bottom: 1px solid var(--rule);">
+<!-- BUDGET -->
+  <div class="sec-head">Budget — Estimé vs Réel</div>
+  <div class="budget-card">
+    <div class="budget-title">Soumission initiale vs dépenses réelles</div>
+    <div class="budget-bar-wrap">
+      <div class="budget-labels">
+        <span>0 $</span>
+        <span>Estimé : 51 237,09 $</span>
+      </div>
+      <div class="budget-track">
+        <div class="budget-fill" id="budgetFill" style="width:0%">
+          <span class="budget-fill-label" id="budgetFillLabel"></span>
+        </div>
+      </div>
+    </div>
+    <div class="budget-amounts">
+      <div class="budget-amt">
+        <div class="budget-amt-n" style="color:var(--ink)">51 237 $</div>
+        <div class="budget-amt-l">Estimé</div>
+      </div>
+      <div class="budget-amt">
+        <div class="budget-amt-n" style="color:var(--blue)" id="realAmt">— $</div>
+        <div class="budget-amt-l">Réel à ce jour</div>
+      </div>
+      <div class="budget-amt">
+        <div class="budget-amt-n" id="restAmt" style="color:var(--green)">— $</div>
+        <div class="budget-amt-l">Reste disponible</div>
+      </div>
+    </div>
+    <div class="budget-note" style="margin-bottom:12px">Dépenses au <strong>27 juin 2026</strong></div>
+    <div id="depenseDetail"></div>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- PHASES DE RÉALISATION -->
+  <div class="sec-head">Phases de réalisation</div>
+
+
+
+  <div class="zones" id="zonesContainer"></div>
+
+  <!-- LISTE D'ACHAT -->
+  <div class="sec-head">Liste d'achats — par date butoire</div>
+  <table class="achats-table" id="achatsTable">
+    <thead>
+      <tr>
+        <th>Date butoire</th>
+        <th>Zone</th>
+        <th>Article</th>
+        <th>Type</th>
+        <th style="text-align:right">Qté</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody id="achatsBody"></tbody>
+  </table>
+
+  <div class="legend">
+    <div class="leg-title">Légende</div>
+    <div class="leg-item"><span class="pill s-fait">Fait</span></div>
+    <div class="leg-item"><span class="pill s-cours">En cours</span></div>
+    <div class="leg-item"><span class="pill s-bloque">Bloqué</span></div>
+    <div class="leg-item"><span class="pill s-afaire">À faire</span></div>
+    <div class="leg-item"><span class="pill s-valider">À valider</span></div>
+  </div>
+</main>
+
+<footer>Maillon Fort Inc. — Document confidentiel — Projet Mariana 2026</footer>
+
+<script>
+// ── VRAIES DONNÉES CSV ──
+const DATA = [
+  {step:"1",zone:"Garage",etape:"Démolition",type:"action",tache:"Démolition dalle béton",statut:"Fait",resp:"JD + Yves",dateButoire:"",deb:"2026-06-01",fin:"2026-06-01",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Garage",etape:"Réalisation",type:"action",tache:"Plomberie",statut:"Fait",resp:"JD + Yves",dateButoire:"",deb:"2026-06-01",fin:"2026-06-01",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Garage",etape:"Réalisation",type:"action",tache:"Préparation terrain — coffrage + armature",statut:"Fait",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-06-15",fin:"2026-06-15",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Garage",etape:"Réalisation",type:"action",tache:"Call Bétonnière pour dispo 22 ou 23 juin",statut:"Fait",resp:"JD",dateButoire:"",deb:"2026-06-15",fin:"2026-06-15",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Garage",etape:"Réalisation",type:"action",tache:"Couler dalle béton",statut:"Fait",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-06-22",fin:"2026-06-22",qty:"0,5",note:"",fournisseur:""},
+  {step:"1",zone:"Garage",etape:"Finitions",type:"action",tache:"Polissage dalle béton",statut:"Fait",resp:"JD",dateButoire:"",deb:"2026-06-22",fin:"2026-06-22",qty:"0,5",note:"",fournisseur:""},
+  {step:"1",zone:"Balcon 2e",etape:"Pre-Prod",type:"action",tache:"Prendre couleur du mortier",statut:"Fait",resp:"JD",dateButoire:"",deb:"2026-06-22",fin:"2026-06-22",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Balcon 2e",etape:"Pre-Prod",type:"action",tache:"Réparer trailer Max",statut:"Fait",resp:"Max",dateButoire:"",deb:"2026-06-22",fin:"2026-06-23",qty:"1",note:"",fournisseur:""},
+  {step:"1",zone:"Balcon 2e",etape:"Pre-Prod",type:"action",tache:"Aller chercher les échafaudages",statut:"Fait",resp:"Max",dateButoire:"",deb:"2026-06-22",fin:"2026-06-23",qty:"0,5",note:"",fournisseur:""},
+  {step:"1",zone:"Metal",etape:"Réalisation",type:"action",tache:"Galvanisation — Corbec (40¢/lb)",statut:"À faire",resp:"JD + Yves",dateButoire:"",deb:"2026-07-06",fin:"2026-07-24",qty:"0,5",note:"Lead time à confirmer",fournisseur:"Corbec"},
+  {step:"1",zone:"Metal",etape:"Pre-Prod",type:"achat",tache:"Commander acier — Acier Picard",statut:"À faire",resp:"JD",dateButoire:"2026-07-06",deb:"2026-07-09",fin:"2026-07-09",qty:"",note:"",fournisseur:"Acier Picard"},
+  {step:"1",zone:"Metal",etape:"Réalisation",type:"action",tache:"Couper acier avec liste de coupe",statut:"À faire",resp:"JD + Yves",dateButoire:"",deb:"2026-07-06",fin:"2026-07-24",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Metal",etape:"Pre-Prod",type:"action",tache:"Ajustement de la liste de coupe",statut:"À faire",resp:"JD",dateButoire:"",deb:"2026-07-06",fin:"2026-07-24",qty:"",note:"",fournisseur:""},
+  {step:"1",zone:"Metal",etape:"Réalisation",type:"logistique",tache:"Transport JD → Corbec → Mariana",statut:"Bloqué",resp:"Faber",dateButoire:"2026-07-27",deb:"",fin:"",qty:"",note:"Trailer requis",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"action",tache:"Démolition balcon 2e étage",statut:"À faire",resp:"JD + Yves",dateButoire:"",deb:"2026-07-27",fin:"2026-07-27",qty:"1",note:"",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Réalisation",type:"achat",tache:"Béton en sac",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"5",note:"Pour sonotubes",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"action",tache:"Coulée béton sonotube",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-07-27",fin:"2026-07-27",qty:"",note:"",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"action",tache:"Réparation de la brique",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-07-27",fin:"2026-07-27",qty:"",note:"",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"action",tache:"Sonotube pour support balcon 2e",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-07-27",fin:"2026-07-27",qty:"",note:"Réserver LAV 1 sem avant",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"action",tache:"Vendre le métal récupéré",statut:"À faire",resp:"—",dateButoire:"",deb:"2026-07-27",fin:"2026-07-27",qty:"",note:"",fournisseur:"AIM"},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"action",tache:"Apporter trailer Max",statut:"À faire",resp:"Max",dateButoire:"",deb:"2026-07-27",fin:"2026-07-27",qty:"",note:"",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Démolition",type:"logistique",tache:"Livraison des échafauds",statut:"Fait",resp:"Max",dateButoire:"2026-07-27",deb:"2026-07-27",fin:"2026-07-27",qty:"0,5",note:"",fournisseur:""},
+  {step:"2",zone:"Balcon Gen",etape:"Démolition",type:"location",tache:"Réserver conteneur Express Bac",statut:"Bloqué",resp:"Max",dateButoire:"2026-07-27",deb:"2026-07-20",fin:"2026-07-20",qty:"",note:"Client doit s'en occuper",fournisseur:"Express Bac"},
+  {step:"2",zone:"Balcon 2e",etape:"Réalisation",type:"action",tache:"Structure bois balcon 2e",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-07-28",fin:"2026-07-28",qty:"1",note:"",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Réalisation",type:"action",tache:"Installation colonnes acier galvanisé",statut:"Bloqué",resp:"Max, Yves, JD",dateButoire:"",deb:"2026-07-28",fin:"2026-07-28",qty:"",note:"🚫 Dépend Corbec + preprod",fournisseur:""},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Lame saw all à métal",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"1",note:"",fournisseur:"Premier Tool"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Mortier Blanc",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"1",note:"",fournisseur:"Maconnex"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Lame grinder",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"1",note:"",fournisseur:"Canadian Tire"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Sonotube 6\"",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"1",note:"",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"3/4 net",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"1",note:"",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Boite de clou (fusil)",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"1",note:"",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"2x10 8'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"9",note:"Solive balcon 2e",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"2x10 12'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"3",note:"Solive de rive + entretoise",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Fourrure 10'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"6",note:"Fond de clouage soffite",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Ply 3/4",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"11",note:"335 pi²",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Ply 1/2",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"11",note:"335 pi²",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"achat",tache:"Ancrage 1/2 à béton",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"4",note:"Boite de 15",fournisseur:"Canac"},
+  {step:"2",zone:"Balcon 2e",etape:"Pre-Prod",type:"location",tache:"Location terrière sonotube",statut:"Fait",resp:"Max",dateButoire:"",deb:"2026-06-20",fin:"2026-06-20",qty:"",note:"",fournisseur:"Simplex"},
+  {step:"3",zone:"Balcon RDC",etape:"Démolition",type:"action",tache:"Démolition balcon RDC (toit garage)",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-07-29",fin:"2026-07-29",qty:"1",note:"",fournisseur:""},
+  {step:"3",zone:"Balcon RDC",etape:"Réalisation",type:"action",tache:"Structure bois balcon RDC",statut:"À faire",resp:"Max + Yves + JD",dateButoire:"",deb:"2026-07-31",fin:"2026-07-31",qty:"1",note:"",fournisseur:""},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"logistique",tache:"Livraison bois",statut:"À faire",resp:"Max",dateButoire:"2026-07-27",deb:"",fin:"",qty:"",note:"",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"LVL 9 1/2 24'",statut:"À faire",resp:"JD",dateButoire:"2026-07-29",deb:"",fin:"",qty:"2",note:"",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"LVL 9 1/2 12'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"2",note:"Min 11",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"Poutrelle en I 9 1/2 24'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"9",note:"Min 24'",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"Poutrelle en I 9 1/2 16'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"2",note:"",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"Vis structurale",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"1",note:"Pour étriers",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"Étrier",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"18",note:"Pour poutrelles en I",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"Boite de vis traité 2 po",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"2",note:"",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"2x12 10'",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"1",note:"Limon escalier RDC",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Pre-Prod",type:"achat",tache:"Noue 6\"",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-07-29",deb:"",fin:"",qty:"5",note:"Étanchéité balcon/mur",fournisseur:"Canac"},
+  {step:"3",zone:"Balcon RDC",etape:"Démolition",type:"location",tache:"Location scie à béton Simplex",statut:"Fait",resp:"Max",dateButoire:"",deb:"2026-06-20",fin:"2026-06-20",qty:"",note:"",fournisseur:"Simplex"},
+  {step:"4",zone:"Balcon Gen",etape:"Finitions",type:"action",tache:"Préparation surface — Bondo",statut:"À faire",resp:"JD + Yves + Max + Marc",dateButoire:"",deb:"2026-08-01",fin:"2026-08-12",qty:"",note:"Après structure bois",fournisseur:""},
+  {step:"4",zone:"Balcon Gen",etape:"Finitions",type:"action",tache:"Application fibre de verre (4 jours)",statut:"À faire",resp:"JD + Yves + Max + Marc",dateButoire:"",deb:"2026-08-01",fin:"2026-08-12",qty:"",note:"Météo sensible — prévoir abri",fournisseur:""},
+  {step:"4",zone:"Balcon Gen",etape:"Pre-Prod",type:"achat",tache:"Commander ensemble fibre 350 pi²",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-08-01",deb:"",fin:"",qty:"1",note:"350 pi²",fournisseur:"Lab. St-Antoine"},
+  {step:"4",zone:"Balcon Gen",etape:"Pre-Prod",type:"achat",tache:"Bondo",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-08-01",deb:"",fin:"",qty:"8",note:"Préparation de surface",fournisseur:"Canadian Tire"},
+  {step:"4",zone:"Balcon Gen",etape:"Pre-Prod",type:"achat",tache:"Combinaison de peintre",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-08-01",deb:"",fin:"",qty:"8",note:"",fournisseur:"Canac"},
+  {step:"4",zone:"Balcon Gen",etape:"Pre-Prod",type:"achat",tache:"Gant L nitrile",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-08-01",deb:"",fin:"",qty:"2",note:"",fournisseur:"Canac"},
+  {step:"4",zone:"Balcon Gen",etape:"Pre-Prod",type:"achat",tache:"Bâche 8x10",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-08-01",deb:"",fin:"",qty:"5",note:"",fournisseur:"Canac"},
+  {step:"4",zone:"Balcon Gen",etape:"Pre-Prod",type:"achat",tache:"Bâche 24x36",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"2026-08-01",deb:"",fin:"",qty:"1",note:"Pour abri",fournisseur:"Canadian Tire"},
+  {step:"5",zone:"Finitions",etape:"Finitions",type:"action",tache:"Installation clôtures métalliques galvanisées",statut:"À faire",resp:"JD + Jeff",dateButoire:"",deb:"2026-08-13",fin:"2026-08-28",qty:"",note:"",fournisseur:""},
+  {step:"5",zone:"Finitions",etape:"Finitions",type:"action",tache:"Installation marches (21 marches — 2x10)",statut:"À faire",resp:"JD + Yves + +1",dateButoire:"",deb:"2026-08-13",fin:"2026-08-28",qty:"",note:"",fournisseur:""},
+  {step:"5",zone:"Finitions",etape:"Finitions",type:"action",tache:"Mur intimité (1x6)",statut:"À faire",resp:"JD + Yves + +1",dateButoire:"",deb:"2026-08-13",fin:"2026-08-28",qty:"",note:"",fournisseur:""},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"achat",tache:"Soffite",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"",note:"Valider couleur",fournisseur:"Canac"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"achat",tache:"Silicone + calfeutrage",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"",note:"",fournisseur:"Canac"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"achat",tache:"1x6x12",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"18",note:"",fournisseur:"Canac"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"achat",tache:"Tire fond 2 1/2",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"56",note:"",fournisseur:"Canac"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"achat",tache:"Vis de couleur",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"700",note:"",fournisseur:"Canac"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"location",tache:"Plieuse",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"",note:"",fournisseur:"Simplex"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"location",tache:"Coupeuse Alu",statut:"À faire",resp:"JD + Yves + Max",dateButoire:"À Valider",deb:"",fin:"",qty:"",note:"",fournisseur:"Simplex"},
+  {step:"5",zone:"Finitions",etape:"Pre-Prod",type:"achat",tache:"2x10x10 (21 marches)",statut:"À faire",resp:"—",dateButoire:"À Valider",deb:"",fin:"",qty:"7",note:"",fournisseur:"Canac"},
+  {step:"5",zone:"Finitions",etape:"Pre-prod",type:"achat",tache:"Aluminium (couleur à valider)",statut:"À faire",resp:"—",dateButoire:"À Valider",deb:"",fin:"",qty:"1",note:"",fournisseur:""},
+];
+
+// ── Helpers ──
+const MOIS = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+function fmtDate(s) {
+  if (!s || s === 'À Valider') return s || '';
+  const d = new Date(s); if (isNaN(d)) return s;
+  return `${d.getDate()} ${MOIS[d.getMonth()]}`;
+}
+function parseDate(s) {
+  if (!s || s === 'À Valider') return null;
+  const d = new Date(s); return isNaN(d) ? null : d;
+}
+function statCls(s) {
+  if (!s) return 's-afaire';
+  const k = s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,'');
+  if (k.includes('fait')) return 's-fait';
+  if (k.includes('cours')) return 's-cours';
+  if (k.includes('bloqu')) return 's-bloque';
+  if (k.includes('valider')) return 's-valider';
+  if (k.includes('annul')) return 's-annule';
+  return 's-afaire';
+}
+function dotColor(s) {
+  const m = {'s-fait':'#057A55','s-cours':'#D97706','s-bloque':'#C81E1E','s-afaire':'#1A56DB','s-valider':'#C05621','s-annule':'#6B7280'};
+  return m[statCls(s)] || '#6B7280';
+}
+function statPill(s) {
+  const cls = statCls(s);
+  const labels = {'s-fait':'Fait','s-cours':'En cours','s-bloque':'Bloqué','s-afaire':'À faire','s-valider':'À valider','s-annule':'Annulé'};
+  return `<span class="pill ${cls}">${labels[cls]||s}</span>`;
+}
+function zoneStatut(tasks) {
+  const ss = tasks.map(t => t.statut.toLowerCase());
+  if (ss.every(s => s.includes('fait'))) return 'Fait';
+  if (ss.some(s => s.includes('bloqu'))) return 'Bloqué';
+  if (ss.some(s => s.includes('cours'))) return 'En cours';
+  return 'À faire';
+}
+function zoneDates(tasks) {
+  const debs = tasks.map(t => parseDate(t.deb)).filter(Boolean);
+  const fins  = tasks.map(t => parseDate(t.fin)).filter(Boolean);
+  const all   = [...debs, ...fins];
+  if (!all.length) return 'Dates à définir';
+  const mn = new Date(Math.min(...all)), mx = new Date(Math.max(...all));
+  if (mn.getTime() === mx.getTime()) return fmtDate(mn.toISOString().slice(0,10));
+  return `${fmtDate(mn.toISOString().slice(0,10))} → ${fmtDate(mx.toISOString().slice(0,10))}`;
+}
+
+// ── Grouper zones dans l'ordre d'apparition ──
+const zoneOrder = [];
+const zoneMap = {};
+for (const t of DATA) {
+  if (!zoneOrder.includes(t.zone)) { zoneOrder.push(t.zone); zoneMap[t.zone] = []; }
+  zoneMap[t.zone].push(t);
+}
+
+// ── KPIs ──
+const total  = DATA.length;
+const faites = DATA.filter(t => statCls(t.statut) === 's-fait').length;
+const bloq   = DATA.filter(t => statCls(t.statut) === 's-bloque').length;
+const pct    = Math.round(faites / total * 100);
+
+const now = new Date();
+document.getElementById('hDate').textContent = `${now.getDate()} ${MOIS[now.getMonth()]} ${now.getFullYear()}`;
+document.getElementById('kpis').innerHTML = `
+  <div class="kpi"><div class="kpi-n" style="color:var(--ink)">${zoneOrder.length}</div><div class="kpi-l">Zones</div></div>
+  <div class="kpi"><div class="kpi-n" style="color:var(--ink)">${total}</div><div class="kpi-l">Tâches</div></div>
+  <div class="kpi"><div class="kpi-n" style="color:var(--green)">${faites}</div><div class="kpi-l">Complétées</div></div>
+  <div class="kpi"><div class="kpi-n" style="color:var(--red)">${bloq}</div><div class="kpi-l">Bloquées</div></div>
+`;
+document.getElementById('pct').textContent = pct + '%';
+setTimeout(() => document.getElementById('pFill').style.width = pct + '%', 200);
+
+// ── Rendu zones ──
+let currentTab = 'afaire';
+
+function isFait(t) { return statCls(t.statut) === 's-fait'; }
+function isAfaire(t) { return !isFait(t); }
+
+function renderZones(filterFn) {
+  const container = document.getElementById('zonesContainer');
+  container.innerHTML = '';
+  let idx = 0;
+  for (const zone of zoneOrder) {
+    const allTasks = zoneMap[zone];
+    // Seulement les actions pour les phases
+    const actionTasks = allTasks.filter(t => t.type === 'action');
+    const tasks = actionTasks.filter(filterFn);
+    if (!tasks.length) continue;
+    idx++;
+    const id = `z${idx}`;
+    const zs = zoneStatut(actionTasks);
+    const zd = zoneDates(actionTasks);
+    const stepNum = allTasks[0]?.step || '?';
+    // Trier par date debut
+    const sorted = [...tasks].sort((a,b) => {
+      const da = parseDate(a.deb), db = parseDate(b.deb);
+      if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+      return da - db;
+    });
+    const block = document.createElement('div');
+    block.className = 'zone-block';
+    block.innerHTML = `
+      <div class="zone-hdr" onclick="toggleZ('${id}')">
+        <div class="zone-step">S${stepNum}</div>
+        <div class="zone-name"><span class="chev" id="c${id}">▶</span>${zone} <span style="font-size:11px;font-weight:400;color:var(--ink-muted);font-family:'DM Mono',monospace">${zd}</span></div>
+        <div></div>
+        <div>${statPill(zs)}</div>
+        <div class="zone-count">${tasks.length}/${actionTasks.length}</div>
+      </div>
+      <div class="zone-tasks" id="${id}">
+        <div class="tasks-hdr">
+          <div class="th">Tâche</div>
+          <div class="th c">Statut</div>
+          <div class="th c">Début</div>
+          <div class="th c">Fin</div>
+        </div>
+        ${sorted.map(t => `
+          <div class="task-row">
+            <div class="task-n">
+              ${t.tache}
+            </div>
+            <div class="task-r">${statPill(t.statut)}</div>
+            <div class="task-d">${fmtDate(t.deb) || '—'}</div>
+            <div class="task-d">${fmtDate(t.fin) || '—'}</div>
+          </div>`).join('')}
+      </div>`;
+    container.appendChild(block);
+  }
+}
+
+function toggleZ(id) {
+  document.getElementById(id).classList.toggle('open');
+  document.getElementById('c'+id).classList.toggle('open');
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  ['afaire','fait','all'].forEach(t => {
+    document.getElementById('tab-'+t).className = 'stab ' + (t === tab ? 'active-tab' : 'inactive-tab');
+  });
+  if (tab === 'afaire') renderZones(() => true);
+  else if (tab === 'fait') renderZones(isFait);
+  else renderZones(() => true);
+}
+
+renderZones(() => true);
+
+// ── Liste d'achats par date butoire ──
+const achats = DATA
+  .filter(t => ['achat','location'].includes(t.type) && t.dateButoire)
+  .sort((a,b) => {
+    const da = parseDate(a.dateButoire), db = parseDate(b.dateButoire);
+    if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+    return da - db;
+  });
+
+const tbody = document.getElementById('achatsBody');
+let lastDate = '';
+for (const a of achats) {
+  const dateStr = a.dateButoire;
+  const isValider = dateStr === 'À Valider';
+  const displayDate = isValider ? 'À valider' : fmtDate(dateStr);
+  const showDate = dateStr !== lastDate;
+  lastDate = dateStr;
+  // Badge type
+  const typeLabel = a.type === 'location' ? '📦 Location' : '🛒 Achat';
+  const typeBg = a.type === 'location' ? 'var(--orange-soft)' : 'var(--blue-soft)';
+  const typeColor = a.type === 'location' ? 'var(--orange)' : 'var(--blue)';
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${showDate ? `<span class="date-badge ${isValider?'valider':''}">${displayDate}</span>` : ''}</td>
+    <td>${a.zone}</td>
+    <td>${a.tache}</td>
+    <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;background:${typeBg};color:${typeColor}">${typeLabel}</span></td>
+    <td class="qty-badge">${a.qty || '—'}</td>
+    <td class="fournisseur">${a.note || ''}</td>
+  `;
+  tbody.appendChild(tr);
+}
+
+// ── Budget ──
+const BUDGET = 51237.09;
+const REEL = 3129.66;
+const DEPENSES = [
+  {desc: "canac 0-34", montant: 64.67},
+  {desc: "remb. Canac 0-34", montant: -47.42},
+  {desc: "2x4x10", montant: 5.05},
+  {desc: "LAV", montant: 215.00},
+  {desc: "Beton sur mesure", montant: 1508.47},
+  {desc: "Hrs Maxime", montant: 1282.50},
+  {desc: "Truel Magnesie (simplex)", montant: 53.07},
+  {desc: "Tapeuse 19 po (Simplex", montant: 48.32},
+  {desc: "Hrs Yves", montant: null},
+  {desc: "Hrs JD", montant: null},
+];
+const pctBudget = Math.min(Math.round(REEL / BUDGET * 100), 100);
+setTimeout(() => {
+  document.getElementById('budgetFill').style.width = pctBudget + '%';
+  document.getElementById('budgetFillLabel').textContent = pctBudget + '%';
+  document.getElementById('realAmt').textContent = REEL.toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' $';
+  document.getElementById('restAmt').textContent = (BUDGET - REEL).toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' $';
+  // Détail dépenses
+  const det = document.getElementById('depenseDetail');
+  if (det) {
+    det.innerHTML = DEPENSES.map(d => `
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule);font-size:11px;">
+        <span style="color:var(--ink-soft)">${d.desc}</span>
+        <span style="font-family:'DM Mono',monospace;font-weight:600;color:${d.montant === null ? 'var(--ink-muted)' : d.montant < 0 ? 'var(--green)' : 'var(--ink)'}">${d.montant === null ? 'À venir' : d.montant < 0 ? '(' + Math.abs(d.montant).toFixed(2) + ' $)' : d.montant.toFixed(2) + ' $'}</span>
+      </div>`).join('');
+  }
+}, 300);
+</script>
+</body>
+</html>
