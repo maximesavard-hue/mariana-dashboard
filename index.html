@@ -256,8 +256,6 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-mu
         <th>Zone</th>
         <th>Article</th>
         <th>Type</th>
-        <th style="text-align:right">Qté</th>
-        <th>Note</th>
       </tr>
     </thead>
     <tbody id="achatsBody"></tbody>
@@ -441,7 +439,7 @@ async function init() {
   // ── KPIs ──
   const total  = DATA.length;
   const faites = DATA.filter(t => statCls(t.statut) === 's-fait').length;
-  const bloq   = DATA.filter(t => statCls(t.statut) === 's-bloque').length;
+  const bloq   = DATA.filter(t => (t.type === 'action' || t.type === 'logistique') && statCls(t.statut) === 's-bloque').length;
   const pct    = Math.round(faites / total * 100);
   const now = new Date();
   document.getElementById('hDate').textContent = `${now.getDate()} ${MOIS[now.getMonth()]} ${now.getFullYear()}`;
@@ -461,7 +459,7 @@ async function init() {
     let idx = 0;
     for (const zone of zoneOrder) {
       const allTasks = zoneMap[zone];
-      const actionTasks = allTasks.filter(t => t.type === 'action');
+      const actionTasks = allTasks.filter(t => t.type === 'action' || t.type === 'logistique');
       const tasks = actionTasks.filter(filterFn);
       if (!tasks.length) continue;
       idx++;
@@ -538,8 +536,6 @@ async function init() {
       <td>${a.zone}</td>
       <td>${a.tache}</td>
       <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;background:${typeBg};color:${typeColor}">${typeLabel}</span></td>
-      <td class="qty-badge">${a.qty || '—'}</td>
-      <td class="fournisseur">${a.note || ''}</td>
     `;
     tbody.appendChild(tr);
   }
