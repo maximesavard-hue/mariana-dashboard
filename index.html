@@ -176,11 +176,23 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-mu
   .site-header, .hero, .prog-wrap, .main { padding-left: 16px; padding-right: 16px; }
   .hero h1 { font-size: 20px; }
   .kpis { grid-template-columns: repeat(2, 1fr); }
-  .zone-hdr { grid-template-columns: 28px 1fr 80px; }
-  .zone-dates, .zone-count { display: none; }
-  .task-row, .tasks-hdr { grid-template-columns: 1fr 70px; padding-left: 36px; }
-  .task-r, .task-d:last-child { display: none; }
+
+  /* Zone header : S# | Nom | Pill statut — masquer le div vide (3e) et le compteur (5e) */
+  .zone-hdr { grid-template-columns: 28px 1fr auto; gap: 8px; padding: 12px 14px; }
+  .zone-hdr > div:nth-child(3) { display: none; }
+  .zone-count { display: none; }
+
+  /* Tâches : Tâche | Statut pill — masquer les dates */
+  .task-row, .tasks-hdr { grid-template-columns: 1fr auto; padding-left: 36px; padding-right: 12px; }
+  .task-d { display: none; }
+  .tasks-hdr div:nth-child(3), .tasks-hdr div:nth-child(4) { display: none; }
+
+  /* Budget */
   .budget-amounts { grid-template-columns: 1fr 1fr; }
+
+  /* Table achats : masquer colonne Zone */
+  .achats-table thead th:nth-child(2),
+  .achats-table tbody td:nth-child(2) { display: none; }
 }
 </style>
 </head>
