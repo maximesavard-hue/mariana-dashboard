@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -276,8 +276,87 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-mu
 <footer>Maillon Fort Inc. — Document confidentiel — Projet Mariana 2026</footer>
 
 <script>
-// ── VRAIES DONNÉES CSV ──
-const DATA = [
+// ── CHARGEMENT CSV ──
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      if (line[i] === '"') { inQ = !inQ; }
+      else if (line[i] === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += line[i]; }
+    }
+    cols.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = (cols[i] || '').trim());
+    return obj;
+  });
+}
+
+// ── HELPERS (globaux) ──
+const MOIS = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+function fmtDate(s) {
+  if (!s || s === 'À Valider') return s || '';
+  const d = new Date(s); if (isNaN(d)) return s;
+  return `${d.getDate()} ${MOIS[d.getMonth()]}`;
+}
+function parseDate(s) {
+  if (!s || s === 'À Valider') return null;
+  const d = new Date(s); return isNaN(d) ? null : d;
+}
+function statCls(s) {
+  if (!s) return 's-afaire';
+  const k = s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,'');
+  if (k.includes('fait')) return 's-fait';
+  if (k.includes('cours')) return 's-cours';
+  if (k.includes('bloqu')) return 's-bloque';
+  if (k.includes('valider')) return 's-valider';
+  if (k.includes('annul')) return 's-annule';
+  return 's-afaire';
+}
+function statPill(s) {
+  const cls = statCls(s);
+  const labels = {'s-fait':'Fait','s-cours':'En cours','s-bloque':'Bloqué','s-afaire':'À faire','s-valider':'À valider','s-annule':'Annulé'};
+  return `<span class="pill ${cls}">${labels[cls]||s}</span>`;
+}
+function zoneStatut(tasks) {
+  const ss = tasks.map(t => t.statut.toLowerCase());
+  if (ss.every(s => s.includes('fait'))) return 'Fait';
+  if (ss.some(s => s.includes('bloqu'))) return 'Bloqué';
+  if (ss.some(s => s.includes('cours'))) return 'En cours';
+  return 'À faire';
+}
+function zoneDates(tasks) {
+  const debs = tasks.map(t => parseDate(t.deb)).filter(Boolean);
+  const fins  = tasks.map(t => parseDate(t.fin)).filter(Boolean);
+  const all   = [...debs, ...fins];
+  if (!all.length) return 'Dates à définir';
+  const mn = new Date(Math.min(...all)), mx = new Date(Math.max(...all));
+  if (mn.getTime() === mx.getTime()) return fmtDate(mn.toISOString().slice(0,10));
+  return `${fmtDate(mn.toISOString().slice(0,10))} → ${fmtDate(mx.toISOString().slice(0,10))}`;
+}
+function toggleZ(id) {
+  document.getElementById(id).classList.toggle('open');
+  document.getElementById('c'+id).classList.toggle('open');
+}
+
+async function init() {
+  const [tachesRes, budgetRes] = await Promise.all([
+    fetch('taches.csv'),
+    fetch('budget.csv')
+  ]);
+  const DATA = parseCSV(await tachesRes.text());
+  const DEPENSES = parseCSV(await budgetRes.text()).map(d => ({
+    desc: d.desc,
+    montant: d.montant === '' ? null : parseFloat(d.montant)
+  }));
+  const BUDGET = 51237.09;
+  const REEL = DEPENSES.reduce((s, d) => s + (d.montant || 0), 0);
+
+  // ── DONNÉES LEGACY SUPPRIMÉES ──
+  const _DATA = [
   {step:"1",zone:"Garage",etape:"Démolition",type:"action",tache:"Démolition dalle béton",statut:"Fait",resp:"JD + Yves",dateButoire:"",deb:"2026-06-01",fin:"2026-06-01",qty:"",note:"",fournisseur:""},
   {step:"1",zone:"Garage",etape:"Réalisation",type:"action",tache:"Plomberie",statut:"Fait",resp:"JD + Yves",dateButoire:"",deb:"2026-06-01",fin:"2026-06-01",qty:"",note:"",fournisseur:""},
   {step:"1",zone:"Garage",etape:"Réalisation",type:"action",tache:"Préparation terrain — coffrage + armature",statut:"Fait",resp:"JD + Yves + Max",dateButoire:"",deb:"2026-06-15",fin:"2026-06-15",qty:"",note:"",fournisseur:""},
@@ -351,217 +430,140 @@ const DATA = [
   {step:"5",zone:"Finitions",etape:"Pre-prod",type:"achat",tache:"Aluminium (couleur à valider)",statut:"À faire",resp:"—",dateButoire:"À Valider",deb:"",fin:"",qty:"1",note:"",fournisseur:""},
 ];
 
-// ── Helpers ──
-const MOIS = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
-function fmtDate(s) {
-  if (!s || s === 'À Valider') return s || '';
-  const d = new Date(s); if (isNaN(d)) return s;
-  return `${d.getDate()} ${MOIS[d.getMonth()]}`;
-}
-function parseDate(s) {
-  if (!s || s === 'À Valider') return null;
-  const d = new Date(s); return isNaN(d) ? null : d;
-}
-function statCls(s) {
-  if (!s) return 's-afaire';
-  const k = s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,'');
-  if (k.includes('fait')) return 's-fait';
-  if (k.includes('cours')) return 's-cours';
-  if (k.includes('bloqu')) return 's-bloque';
-  if (k.includes('valider')) return 's-valider';
-  if (k.includes('annul')) return 's-annule';
-  return 's-afaire';
-}
-function dotColor(s) {
-  const m = {'s-fait':'#057A55','s-cours':'#D97706','s-bloque':'#C81E1E','s-afaire':'#1A56DB','s-valider':'#C05621','s-annule':'#6B7280'};
-  return m[statCls(s)] || '#6B7280';
-}
-function statPill(s) {
-  const cls = statCls(s);
-  const labels = {'s-fait':'Fait','s-cours':'En cours','s-bloque':'Bloqué','s-afaire':'À faire','s-valider':'À valider','s-annule':'Annulé'};
-  return `<span class="pill ${cls}">${labels[cls]||s}</span>`;
-}
-function zoneStatut(tasks) {
-  const ss = tasks.map(t => t.statut.toLowerCase());
-  if (ss.every(s => s.includes('fait'))) return 'Fait';
-  if (ss.some(s => s.includes('bloqu'))) return 'Bloqué';
-  if (ss.some(s => s.includes('cours'))) return 'En cours';
-  return 'À faire';
-}
-function zoneDates(tasks) {
-  const debs = tasks.map(t => parseDate(t.deb)).filter(Boolean);
-  const fins  = tasks.map(t => parseDate(t.fin)).filter(Boolean);
-  const all   = [...debs, ...fins];
-  if (!all.length) return 'Dates à définir';
-  const mn = new Date(Math.min(...all)), mx = new Date(Math.max(...all));
-  if (mn.getTime() === mx.getTime()) return fmtDate(mn.toISOString().slice(0,10));
-  return `${fmtDate(mn.toISOString().slice(0,10))} → ${fmtDate(mx.toISOString().slice(0,10))}`;
-}
+  // ── Grouper zones ──
+  const zoneOrder = [];
+  const zoneMap = {};
+  for (const t of DATA) {
+    if (!zoneOrder.includes(t.zone)) { zoneOrder.push(t.zone); zoneMap[t.zone] = []; }
+    zoneMap[t.zone].push(t);
+  }
 
-// ── Grouper zones dans l'ordre d'apparition ──
-const zoneOrder = [];
-const zoneMap = {};
-for (const t of DATA) {
-  if (!zoneOrder.includes(t.zone)) { zoneOrder.push(t.zone); zoneMap[t.zone] = []; }
-  zoneMap[t.zone].push(t);
-}
+  // ── KPIs ──
+  const total  = DATA.length;
+  const faites = DATA.filter(t => statCls(t.statut) === 's-fait').length;
+  const bloq   = DATA.filter(t => statCls(t.statut) === 's-bloque').length;
+  const pct    = Math.round(faites / total * 100);
+  const now = new Date();
+  document.getElementById('hDate').textContent = `${now.getDate()} ${MOIS[now.getMonth()]} ${now.getFullYear()}`;
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><div class="kpi-n" style="color:var(--ink)">${zoneOrder.length}</div><div class="kpi-l">Zones</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:var(--ink)">${total}</div><div class="kpi-l">Tâches</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:var(--green)">${faites}</div><div class="kpi-l">Complétées</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:var(--red)">${bloq}</div><div class="kpi-l">Bloquées</div></div>
+  `;
+  document.getElementById('pct').textContent = pct + '%';
+  setTimeout(() => document.getElementById('pFill').style.width = pct + '%', 200);
 
-// ── KPIs ──
-const total  = DATA.length;
-const faites = DATA.filter(t => statCls(t.statut) === 's-fait').length;
-const bloq   = DATA.filter(t => statCls(t.statut) === 's-bloque').length;
-const pct    = Math.round(faites / total * 100);
+  // ── Rendu zones ──
+  function renderZones(filterFn) {
+    const container = document.getElementById('zonesContainer');
+    container.innerHTML = '';
+    let idx = 0;
+    for (const zone of zoneOrder) {
+      const allTasks = zoneMap[zone];
+      const actionTasks = allTasks.filter(t => t.type === 'action');
+      const tasks = actionTasks.filter(filterFn);
+      if (!tasks.length) continue;
+      idx++;
+      const id = `z${idx}`;
+      const zs = zoneStatut(actionTasks);
+      const zd = zoneDates(actionTasks);
+      const stepNum = allTasks[0]?.step || '?';
+      const sorted = [...tasks].sort((a,b) => {
+        const da = parseDate(a.deb), db = parseDate(b.deb);
+        if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+        return da - db;
+      });
+      const block = document.createElement('div');
+      block.className = 'zone-block';
+      block.innerHTML = `
+        <div class="zone-hdr" onclick="toggleZ('${id}')">
+          <div class="zone-step">S${stepNum}</div>
+          <div class="zone-name"><span class="chev" id="c${id}">▶</span>${zone} <span style="font-size:11px;font-weight:400;color:var(--ink-muted);font-family:'DM Mono',monospace">${zd}</span></div>
+          <div></div>
+          <div>${statPill(zs)}</div>
+          <div class="zone-count">${tasks.length}/${actionTasks.length}</div>
+        </div>
+        <div class="zone-tasks" id="${id}">
+          <div class="tasks-hdr">
+            <div class="th">Tâche</div>
+            <div class="th c">Statut</div>
+            <div class="th c">Début</div>
+            <div class="th c">Fin</div>
+          </div>
+          ${sorted.map(t => `
+            <div class="task-row">
+              <div class="task-n">${t.tache}</div>
+              <div class="task-r">${statPill(t.statut)}</div>
+              <div class="task-d">${fmtDate(t.deb) || '—'}</div>
+              <div class="task-d">${fmtDate(t.fin) || '—'}</div>
+            </div>`).join('')}
+        </div>`;
+      container.appendChild(block);
+    }
+  }
 
-const now = new Date();
-document.getElementById('hDate').textContent = `${now.getDate()} ${MOIS[now.getMonth()]} ${now.getFullYear()}`;
-document.getElementById('kpis').innerHTML = `
-  <div class="kpi"><div class="kpi-n" style="color:var(--ink)">${zoneOrder.length}</div><div class="kpi-l">Zones</div></div>
-  <div class="kpi"><div class="kpi-n" style="color:var(--ink)">${total}</div><div class="kpi-l">Tâches</div></div>
-  <div class="kpi"><div class="kpi-n" style="color:var(--green)">${faites}</div><div class="kpi-l">Complétées</div></div>
-  <div class="kpi"><div class="kpi-n" style="color:var(--red)">${bloq}</div><div class="kpi-l">Bloquées</div></div>
-`;
-document.getElementById('pct').textContent = pct + '%';
-setTimeout(() => document.getElementById('pFill').style.width = pct + '%', 200);
+  window.switchTab = function(tab) {
+    ['afaire','fait','all'].forEach(t => {
+      document.getElementById('tab-'+t).className = 'stab ' + (t === tab ? 'active-tab' : 'inactive-tab');
+    });
+    if (tab === 'fait') renderZones(t => statCls(t.statut) === 's-fait');
+    else renderZones(() => true);
+  };
 
-// ── Rendu zones ──
-let currentTab = 'afaire';
+  renderZones(() => true);
 
-function isFait(t) { return statCls(t.statut) === 's-fait'; }
-function isAfaire(t) { return !isFait(t); }
-
-function renderZones(filterFn) {
-  const container = document.getElementById('zonesContainer');
-  container.innerHTML = '';
-  let idx = 0;
-  for (const zone of zoneOrder) {
-    const allTasks = zoneMap[zone];
-    // Seulement les actions pour les phases
-    const actionTasks = allTasks.filter(t => t.type === 'action');
-    const tasks = actionTasks.filter(filterFn);
-    if (!tasks.length) continue;
-    idx++;
-    const id = `z${idx}`;
-    const zs = zoneStatut(actionTasks);
-    const zd = zoneDates(actionTasks);
-    const stepNum = allTasks[0]?.step || '?';
-    // Trier par date debut
-    const sorted = [...tasks].sort((a,b) => {
-      const da = parseDate(a.deb), db = parseDate(b.deb);
+  // ── Liste d'achats ──
+  const achats = DATA
+    .filter(t => ['achat','location'].includes(t.type) && t.dateButoire)
+    .sort((a,b) => {
+      const da = parseDate(a.dateButoire), db = parseDate(b.dateButoire);
       if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
       return da - db;
     });
-    const block = document.createElement('div');
-    block.className = 'zone-block';
-    block.innerHTML = `
-      <div class="zone-hdr" onclick="toggleZ('${id}')">
-        <div class="zone-step">S${stepNum}</div>
-        <div class="zone-name"><span class="chev" id="c${id}">▶</span>${zone} <span style="font-size:11px;font-weight:400;color:var(--ink-muted);font-family:'DM Mono',monospace">${zd}</span></div>
-        <div></div>
-        <div>${statPill(zs)}</div>
-        <div class="zone-count">${tasks.length}/${actionTasks.length}</div>
-      </div>
-      <div class="zone-tasks" id="${id}">
-        <div class="tasks-hdr">
-          <div class="th">Tâche</div>
-          <div class="th c">Statut</div>
-          <div class="th c">Début</div>
-          <div class="th c">Fin</div>
-        </div>
-        ${sorted.map(t => `
-          <div class="task-row">
-            <div class="task-n">
-              ${t.tache}
-            </div>
-            <div class="task-r">${statPill(t.statut)}</div>
-            <div class="task-d">${fmtDate(t.deb) || '—'}</div>
-            <div class="task-d">${fmtDate(t.fin) || '—'}</div>
-          </div>`).join('')}
-      </div>`;
-    container.appendChild(block);
+  const tbody = document.getElementById('achatsBody');
+  let lastDate = '';
+  for (const a of achats) {
+    const dateStr = a.dateButoire;
+    const isValider = dateStr === 'À Valider';
+    const displayDate = isValider ? 'À valider' : fmtDate(dateStr);
+    const showDate = dateStr !== lastDate;
+    lastDate = dateStr;
+    const typeLabel = a.type === 'location' ? '📦 Location' : '🛒 Achat';
+    const typeBg = a.type === 'location' ? 'var(--orange-soft)' : 'var(--blue-soft)';
+    const typeColor = a.type === 'location' ? 'var(--orange)' : 'var(--blue)';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${showDate ? `<span class="date-badge ${isValider?'valider':''}">${displayDate}</span>` : ''}</td>
+      <td>${a.zone}</td>
+      <td>${a.tache}</td>
+      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;background:${typeBg};color:${typeColor}">${typeLabel}</span></td>
+      <td class="qty-badge">${a.qty || '—'}</td>
+      <td class="fournisseur">${a.note || ''}</td>
+    `;
+    tbody.appendChild(tr);
   }
+
+  // ── Budget ──
+  const pctBudget = Math.min(Math.round(REEL / BUDGET * 100), 100);
+  setTimeout(() => {
+    document.getElementById('budgetFill').style.width = pctBudget + '%';
+    document.getElementById('budgetFillLabel').textContent = pctBudget + '%';
+    document.getElementById('realAmt').textContent = REEL.toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' $';
+    document.getElementById('restAmt').textContent = (BUDGET - REEL).toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' $';
+    const det = document.getElementById('depenseDetail');
+    if (det) {
+      det.innerHTML = DEPENSES.map(d => `
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule);font-size:11px;">
+          <span style="color:var(--ink-soft)">${d.desc}</span>
+          <span style="font-family:'DM Mono',monospace;font-weight:600;color:${d.montant === null ? 'var(--ink-muted)' : d.montant < 0 ? 'var(--green)' : 'var(--ink)'}">${d.montant === null ? 'À venir' : d.montant < 0 ? '(' + Math.abs(d.montant).toFixed(2) + ' $)' : d.montant.toFixed(2) + ' $'}</span>
+        </div>`).join('');
+    }
+  }, 300);
 }
 
-function toggleZ(id) {
-  document.getElementById(id).classList.toggle('open');
-  document.getElementById('c'+id).classList.toggle('open');
-}
+init();
 
-function switchTab(tab) {
-  currentTab = tab;
-  ['afaire','fait','all'].forEach(t => {
-    document.getElementById('tab-'+t).className = 'stab ' + (t === tab ? 'active-tab' : 'inactive-tab');
-  });
-  if (tab === 'afaire') renderZones(() => true);
-  else if (tab === 'fait') renderZones(isFait);
-  else renderZones(() => true);
-}
-
-renderZones(() => true);
-
-// ── Liste d'achats par date butoire ──
-const achats = DATA
-  .filter(t => ['achat','location'].includes(t.type) && t.dateButoire)
-  .sort((a,b) => {
-    const da = parseDate(a.dateButoire), db = parseDate(b.dateButoire);
-    if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
-    return da - db;
-  });
-
-const tbody = document.getElementById('achatsBody');
-let lastDate = '';
-for (const a of achats) {
-  const dateStr = a.dateButoire;
-  const isValider = dateStr === 'À Valider';
-  const displayDate = isValider ? 'À valider' : fmtDate(dateStr);
-  const showDate = dateStr !== lastDate;
-  lastDate = dateStr;
-  // Badge type
-  const typeLabel = a.type === 'location' ? '📦 Location' : '🛒 Achat';
-  const typeBg = a.type === 'location' ? 'var(--orange-soft)' : 'var(--blue-soft)';
-  const typeColor = a.type === 'location' ? 'var(--orange)' : 'var(--blue)';
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td>${showDate ? `<span class="date-badge ${isValider?'valider':''}">${displayDate}</span>` : ''}</td>
-    <td>${a.zone}</td>
-    <td>${a.tache}</td>
-    <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;background:${typeBg};color:${typeColor}">${typeLabel}</span></td>
-    <td class="qty-badge">${a.qty || '—'}</td>
-    <td class="fournisseur">${a.note || ''}</td>
-  `;
-  tbody.appendChild(tr);
-}
-
-// ── Budget ──
-const BUDGET = 51237.09;
-const REEL = 3129.66;
-const DEPENSES = [
-  {desc: "canac 0-34", montant: 64.67},
-  {desc: "remb. Canac 0-34", montant: -47.42},
-  {desc: "2x4x10", montant: 5.05},
-  {desc: "LAV", montant: 215.00},
-  {desc: "Beton sur mesure", montant: 1508.47},
-  {desc: "Hrs Maxime", montant: 1282.50},
-  {desc: "Truel Magnesie (simplex)", montant: 53.07},
-  {desc: "Tapeuse 19 po (Simplex", montant: 48.32},
-  {desc: "Hrs Yves", montant: null},
-  {desc: "Hrs JD", montant: null},
-];
-const pctBudget = Math.min(Math.round(REEL / BUDGET * 100), 100);
-setTimeout(() => {
-  document.getElementById('budgetFill').style.width = pctBudget + '%';
-  document.getElementById('budgetFillLabel').textContent = pctBudget + '%';
-  document.getElementById('realAmt').textContent = REEL.toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' $';
-  document.getElementById('restAmt').textContent = (BUDGET - REEL).toLocaleString('fr-CA', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' $';
-  // Détail dépenses
-  const det = document.getElementById('depenseDetail');
-  if (det) {
-    det.innerHTML = DEPENSES.map(d => `
-      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule);font-size:11px;">
-        <span style="color:var(--ink-soft)">${d.desc}</span>
-        <span style="font-family:'DM Mono',monospace;font-weight:600;color:${d.montant === null ? 'var(--ink-muted)' : d.montant < 0 ? 'var(--green)' : 'var(--ink)'}">${d.montant === null ? 'À venir' : d.montant < 0 ? '(' + Math.abs(d.montant).toFixed(2) + ' $)' : d.montant.toFixed(2) + ' $'}</span>
-      </div>`).join('');
-  }
-}, 300);
 </script>
 </body>
 </html>
