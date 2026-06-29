@@ -295,7 +295,9 @@ function parseCSV(text) {
     'tache':'tache','statut':'statut','responsable':'resp','resp':'resp',
     'datebutoire':'dateButoire','datedebut':'deb','deb':'deb',
     'datefin':'fin','fin':'fin','qty':'qty','note':'note',
-    'fournisseurs':'fournisseur','fournisseur':'fournisseur'
+    'fournisseurs':'fournisseur','fournisseur':'fournisseur',
+    'desc':'desc','depense':'desc','depensreel':'desc','depensereeel':'desc',
+    'montant':'montant'
   };
   const headers = lines[0].split(delim).map(h => {
     const norm = h.trim().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,'');
@@ -371,7 +373,12 @@ async function init() {
   const DATA = parseCSV(await tachesRes.text());
   const DEPENSES = parseCSV(await budgetRes.text()).map(d => ({
     desc: d.desc,
-    montant: d.montant === '' ? null : parseFloat(d.montant)
+    montant: (s => {
+      if (!s || s.trim() === '') return null;
+      const neg = s.includes('(') && s.includes(')');
+      const n = parseFloat(s.replace(/[$\s()]/g, '').replace(',', '.'));
+      return isNaN(n) ? null : (neg ? -n : n);
+    })(d.montant)
   }));
   const BUDGET = 51237.09;
   const REEL = DEPENSES.reduce((s, d) => s + (d.montant || 0), 0);
