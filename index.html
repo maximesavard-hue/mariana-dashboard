@@ -366,9 +366,10 @@ function toggleZ(id) {
 }
 
 async function init() {
+  const v = Date.now();
   const [tachesRes, budgetRes] = await Promise.all([
-    fetch('taches.csv'),
-    fetch('budget.csv')
+    fetch('taches.csv?v=' + v),
+    fetch('budget.csv?v=' + v)
   ]);
   const DATA = parseCSV(await tachesRes.text());
   const DEPENSES = parseCSV(await budgetRes.text()).map(d => ({
@@ -581,7 +582,7 @@ async function init() {
     if (det) {
       det.innerHTML = DEPENSES.map(d => `
         <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule);font-size:11px;">
-          <span style="color:var(--ink-soft)">${d.desc}</span>
+          <span style="color:var(--ink-soft)">${d.desc || '—'}</span>
           <span style="font-family:'DM Mono',monospace;font-weight:600;color:${d.montant === null ? 'var(--ink-muted)' : d.montant < 0 ? 'var(--green)' : 'var(--ink)'}">${d.montant === null ? 'À venir' : d.montant < 0 ? '(' + Math.abs(d.montant).toFixed(2) + ' $)' : d.montant.toFixed(2) + ' $'}</span>
         </div>`).join('');
     }
