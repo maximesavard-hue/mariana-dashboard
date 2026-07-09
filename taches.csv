@@ -16,7 +16,7 @@
 1;Metal;Réalisation;Logistique;Corbec a Mariana;À faire;JD;;17-7-2026;17-7-2026;;;;;;
 1;Metal;Réalisation;Logistique;Chez JD a Corbec;À faire;Max;27-7-2026;13-7-2026;13-7-2026;Trailer;;;;;
 2;Balcon 2e;Démolition;Action;Démolition balcon 2e étage;À faire;JD + Yves;;27-7-2026;27-7-2026;;;1;;;Le locataire a-t-il une autre entré ?
-2;Balcon 2e;Pre-Prod;Achat;Béton en sac;À faire;JD + Yves + Max;27-7-2026;;;;;5;pour les sonotubes, 0,60 pied3 chaque;Canac;
+2;Balcon 2e;Pre-Prod;Achat;Béton en sac;À faire;JD + Yves + Max;27-7-2026;27-7-2026;27-7-2026;;;5;pour les sonotubes, 0,60 pied3 chaque;Canac;
 2;Balcon 2e;Démolition;Action;Coulée Beton Sonotube;À faire;JD + Yves + Max;;27-7-2026;27-7-2026;;;;;;
 2;Balcon 2e;Démolition;Action;Reparation de la brique;À faire;JD + Yves + Max;;27-7-2026;27-7-2026;;;;;;
 2;Balcon 2e;Démolition;Action;Sonotube pour Support Balcon 2e ;À faire;JD + Yves + Max;;27-7-2026;27-7-2026;Réserver Équipement LAV (1 sem. avant);Location Terriere Sonotube;;;;
@@ -41,7 +41,7 @@
 2;Balcon 2e;Pre-Prod;Location;Location Terriere Sonotube;Fait;max;;20-6-2026;20-6-2026;;;0;;Simplex;
 3;Balcon RDC;Réalisation;Action;Structure bois balcon RDC;À faire;max yves jd;;31-7-2026;31-7-2026;;;1;;;
 3;Balcon RDC;Démolition;Action;Démolition balcon RDC (toit garage);À faire;JD + Yves Max;;29-7-2026;29-7-2026;;;1;;;
-3;Balcon RDC;Pre-Prod;Logistique;livraison Bois;À faire;Max;27-7-2026;;;;;;;;Peut-on se faire livrer avec un compte
+3;Balcon RDC;Pre-Prod;Logistique;livraison Bois;À faire;Max;27-7-2026;27-7-2026;27-7-2026;;;;;;Peut-on se faire livrer avec un compte
 3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 24';À faire;JD;29-7-2026;;;;;2;;Canac;
 3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 12';À faire;JD + Yves + Max;29-7-2026;;;;;2;au moins 11;Canac;
 3;Balcon RDC;Pre-Prod;Achat;Poutrelle en i 9 1/2 24';À faire;JD + Yves + Max;29-7-2026;;;;;9;au moins 24';Canac;
