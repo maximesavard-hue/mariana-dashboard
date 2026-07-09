@@ -1,11 +1,13 @@
-desc,montant
-canac 0-34,64.67
-remb. Canac 0-34,-47.42
-2x4x10,5.05
-LAV,215.00
-Beton sur mesure,1508.47
-Hrs Maxime,933.75
-Truel Magnesie (simplex),53.07
-Tapeuse 19 po (Simplex),48.32
-Hrs Yves,495.00
-Hrs JD,978.75
+﻿Depense Reel;Montant;Qui;Paiement
+canac 0-34; 64.67  $ ;Max;Non Payé
+remb. Canac 0-34; (47.42) $ ;Max;Non Payé
+2x4x10; 5.05  $ ;Max;Non Payé
+LAV; 215.00  $ ;Max;Non Payé
+Beton sur mesure; 1 508.47  $ ;JD;Non Payé
+Hrs Maxime; 933.75  $ ;Max;Non Payé
+Truel Magnesie (simplex); 53.07  $ ;Max;Non Payé
+Tapeuse 19 po (Simplex; 48.32  $ ;Max;Non Payé
+Hrs Yves; 495.00  $ ;Yves;Non Payé
+Hrs JD; 978.75  $ ;JD;Non Payé
+Conteneur Express Bac; 546.25  $ ;Mariana;Payé
+Métaux; 4 366.63  $ ;Mariana;Payé
