@@ -1,67 +1,68 @@
 ﻿Step;Zone;Étape;Type;Tâche;Statut;Responsable;Date Butoire;Date début;Date fin;Blocants;Task Dependency;Qty;Note;Fournisseurs;Question
-1;Garage;Démolition;Action;Démolition dalle béton;Fait;JD + Yves;;2026-06-01;2026-06-01;;;0;;;
-1;Garage;Réalisation;Action;Plomberie;Fait;JD + Yves;;2026-06-01;2026-06-01;;;0;;;
-1;Garage;Réalisation;Action;Préparation terrain — coffrage + armature;Fait;JD + Yves + Max;;2026-06-15;2026-06-15;Confirmer séquence demain;;1;;;
-1;Garage;Réalisation;Action;Call Bétoniere pour dispo 22 ou 23 juin;Fait;JD;;2026-06-15;2026-06-15;;;0;;;
-1;Garage;Réalisation;Action;Couler dalle béton;Fait;JD + Yves + Max;;2026-06-22;2026-06-22;🚫 Disponibilité bétonnière 22 ou 23 ?;Sedule Betoniere;0,5;;;A trois ou a 4 ? Dans budget prevu 3
-1;Garage;Finitions;Action;Polissage dalle béton;Fait;JD;;2026-06-22;2026-06-22;Après coulée;Sedule Betoniere;0,5;;;Polyssage et finition du beton: as tu dis 1 gars au meeting?
-1;Balcon 2e;Pre-Prod;Action;Prendre Couleur du mortier ;Fait;JD;;2026-06-22;2026-06-22;;;;;;
-1;Balcon 2e;Pre-Prod;Action;réparé trailer Max;Fait;max;;2026-06-22;2026-06-23;;;1;;;
-1;Balcon 2e;Pre-Prod;Action;Aller chercher les Echaffaudages;Fait;Max;;2026-06-22;2026-06-23;Reparé trailer;;0,5;;;
-1;Metal;Réalisation;Action;Assemblage Structure Acier;À faire;JD+Yves;;2026-07-06;2026-07-24;;;;;;
-1;Metal;Réalisation;Action;Galvanisation — Corbec (40¢/lb);À faire;JD+Yves;;2026-07-06;2026-07-24;Lead time à confirmer;;0,5;;Corbec;Galvanise le jour meme et on repart avec ? Donc le livreur attends la bas le temps du process ou doit aller rechercher
-1;Metal;Pre-Prod;achat;Commander acier — Acier Picard;À faire;JD;2026-07-06;2026-07-09;2026-07-09;;;;;Acier Picard;
-1;Metal;Réalisation;action;Couper Acier avec Liste de coupe;À faire;JD+Yves;;2026-07-06;2026-07-24;;;;;;
-1;Metal;Pre-Prod;action;Ajustement de la liste de coupe;À faire;JD;;2026-07-06;2026-07-24;;;;;;
-1;Metal;Réalisation;Logistique;Chez JD a Corbec a Mariana;Bloqué;Faber;2026-07-27;2026-07-06;2026-07-24;Trailer;;;;;
-2;Balcon 2e;Démolition;Action;Démolition balcon 2e étage;À faire;JD + Yves;;2026-07-27;2026-07-27;;;1;;;Le locataire a-t-il une autre entré ?
-2;Balcon 2e;Pre-Prod;Achat;Béton en sac;À faire;JD + Yves + Max;2026-07-27;;;;;5;pour les sonotubes, 0,60 pied3 chaque;Canac;
-2;Balcon 2e;Démolition;Action;Coulée Beton Sonotube;À faire;JD + Yves + Max;;2026-07-27;2026-07-27;;;;;;
-2;Balcon 2e;Démolition;Action;Reparation de la brique;À faire;JD + Yves + Max;;2026-07-27;2026-07-27;;;;;;
-2;Balcon 2e;Démolition;Action;Sonotube pour Support Balcon 2e ;À faire;JD + Yves + Max;;2026-07-27;2026-07-27;Réserver Équipement LAV (1 sem. avant);Location Terriere Sonotube;;;;
-2;Balcon 2e;Démolition;Action;Vendre le metal;À faire;;;2026-07-27;2026-07-27;;;;;AIM;Trailer Max sufisant ? 
-2;Balcon 2e;Démolition;Action;Apporter Trailer Max;À faire;Max;;2026-07-27;2026-07-27;;;;;;
-2;Balcon 2e;Démolition;Logistique;Livraison des Echaffauds ;Fait;max;2026-07-27;2026-07-27;2026-07-27;;;0,5;;;
-2;Balcon Gen;Démolition;Location;Réserver conteneur Express Bac;Bloqué;Max;2026-07-27;2026-07-20;2026-07-20;Client doit s'en occuper;;;;express bac;Combien temps a veux payer le conteneur sur le site & a-t-on soumissionné ailleur que express bac ? 
-2;Balcon 2e;Réalisation;Action;Structure bois balcon 2e;À faire;JD + Yves + Max;;2026-07-28;2026-07-28;;;1;;;
-2;Balcon 2e;Réalisation;Action;Installation colonnes Acier Galvaniser;Bloqué;Max, Yves, JD;;2026-07-28;2026-07-28;🚫 Dépend Corbec + preprod;Preprod Soudure;;;;
-2;Balcon 2e;Pre-Prod;Achat;lame saw all à métal;À faire;JD + Yves + Max;2026-07-27;;;;;1;;Premier tool;
-2;Balcon 2e;Pre-Prod;Achat;Mortier Blanc;À faire;JD + Yves + Max;2026-07-27;;;;;1;;Maconnex;
-2;Balcon 2e;Pre-Prod;Achat;Lame grinder;À faire;JD + Yves + Max;2026-07-27;;;;;1;;Canadian tire;
-2;Balcon 2e;Pre-Prod;Achat;Sonotube;À faire;JD + Yves + Max;2026-07-27;;;;;1;"6""";Canac;
-2;Balcon 2e;Pre-Prod;Achat;3/4 net;À faire;JD + Yves + Max;2026-07-27;;;;;1;;Canac;
-2;Balcon 2e;Pre-Prod;Achat;Boite de clou;À faire;JD + Yves + Max;2026-07-27;;;;;1;barre pour fusil;Canac;
-2;Balcon 2e;Pre-Prod;Achat;2x10 8';À faire;JD + Yves + Max;2026-07-27;;;;;9;Solive balcon 2e;Canac;
-2;Balcon 2e;Pre-Prod;Achat;2x10 12';À faire;JD + Yves + Max;2026-07-27;;;;;3;Solive de rive et entretoise;Canac;
-2;Balcon 2e;Pre-Prod;Achat;Fourrure 10';À faire;JD + Yves + Max;2026-07-27;;;;;6;Fond de clouage soffite;Canac;
-2;Balcon 2e;Pre-Prod;Achat;Ply 3/4 ;À faire;JD + Yves + Max;2026-07-27;;;;;11;335 pi carré;Canac;
-2;Balcon 2e;Pre-Prod;Achat;Ply 1/2;À faire;JD + Yves + Max;2026-07-27;;;;;11;335 pi carré;Canac;
-2;Balcon 2e;Pre-Prod;Achat;ancrage 1/2 à béton;À faire;JD + Yves + Max;2026-07-27;;;;;4;boite de 15;Canac;
-2;Balcon 2e;Pre-Prod;Location;Location Terriere Sonotube;Fait;max;;2026-06-20;2026-06-20;;;0;;Simplex;
-3;Balcon RDC;Réalisation;Action;Structure bois balcon RDC;À faire;max yves jd;;2026-07-31;2026-07-31;;;1;;;
-3;Balcon RDC;Démolition;Action;Démolition balcon RDC (toit garage);À faire;JD + Yves Max;;2026-07-29;2026-07-29;;;1;;;
-3;Balcon RDC;Pre-Prod;Logistique;livraison Bois;À faire;Max;2026-07-27;;;;;;;;Peut-on se faire livrer avec un compte
-3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 24';À faire;JD;2026-07-29;;;;;2;;Canac;
-3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 12';À faire;JD + Yves + Max;2026-07-29;;;;;2;au moins 11;Canac;
-3;Balcon RDC;Pre-Prod;Achat;Poutrelle en i 9 1/2 24';À faire;JD + Yves + Max;2026-07-29;;;;;9;au moins 24';Canac;
-3;Balcon RDC;Pre-Prod;Achat;Poutrelle en i 9 1/2 16';À faire;JD + Yves + Max;2026-07-29;;;;;2;;Canac;
-3;Balcon RDC;Pre-Prod;Achat;vis structurale;À faire;JD + Yves + Max;2026-07-29;;;;;1;pour les étriers;Canac;
-3;Balcon RDC;Pre-Prod;Achat;étrier;À faire;JD + Yves + Max;2026-07-29;;;;;18;pour les poutrelle en i ;Canac;
-3;Balcon RDC;Pre-Prod;Achat;boite de vis traité;À faire;JD + Yves + Max;2026-07-29;;;;;2;2 po;Canac;
-3;Balcon RDC;Pre-Prod;Achat;2x 12 10';À faire;JD + Yves + Max;2026-07-29;;;;;1;limon escalier RDC;Canac;
-3;Balcon RDC;Pre-Prod;Achat;"Noue 6""";À faire;JD + Yves + Max;2026-07-29;;;;;5;étenchiité balcon contre le mur;Canac;
-3;Balcon RDC;Démolition;Location;Location Scie a Beton Simplex ;Fait;Max;;2026-06-20;2026-06-20;;;;;Simplex;
-4;Fibre de verre;Finitions;Action;Préparation surface — Bondo;À faire;JD + Yves + Max + Marc;;2026-08-01;2026-08-12;Après structure bois;;;;;
-4;Fibre de verre;Finitions;Action;Application fibre de verre (4 jours);À faire;JD + Yves + Max + Marc;;2026-08-01;2026-08-12;Météo sensible — prévoir abri;;;;;
-4;Fibre de verre;Pre-Prod;Achat;Commander ensemble fibre 350 pi² ;À faire;JD + Yves + Max;2026-08-01;;;;;1;350 pied carré;Lab. St-Antoine;Doit-on commander d'avance ?
-4;Fibre de verre;Pre-Prod;Achat;Bondo ;À faire;JD + Yves + Max;2026-08-01;;;;;8;préparation de surface;canadian tire;
-4;Fibre de verre;Pre-Prod;Achat;Combinaison de peintre;À faire;JD + Yves + Max;2026-08-01;;;;;8;;canac;
-4;Fibre de verre;Pre-Prod;Achat;gant L nitrile;À faire;JD + Yves + Max;2026-08-01;;;;;2;;canac;
-4;Fibre de verre;Pre-Prod;Achat;bâche 8x10;À faire;JD + Yves + Max;2026-08-01;;;;;5;;canac;
-4;Fibre de verre;Pre-Prod;Achat;bâche 24x36;À faire;JD + Yves + Max;2026-08-01;;;;;1;Pour abris;canadian rire;
-5;Finitions;Finitions;Action;Installation clôtures métalliques galvanisées;À faire;JD + Jeff;;2026-08-13;2026-08-28;;;;;;
-5;Finitions;Finitions;Action;Installation marches (21 marches — 2x10);À faire;JD + Yves + +1;;2026-08-13;2026-08-28;;;;;;
-5;Finitions ;Finitions;Action;Mur intimité (1x6);À faire;JD + Yves + +1;;2026-08-13;2026-08-28;;;;;;
+1;Garage;Démolition;Action;Démolition dalle béton;Fait;JD + Yves;;1-6-2026;1-6-2026;;;0;;;
+1;Garage;Réalisation;Action;Plomberie;Fait;JD + Yves;;1-6-2026;1-6-2026;;;0;;;
+1;Garage;Réalisation;Action;Préparation terrain — coffrage + armature;Fait;JD + Yves + Max;;15-6-2026;15-6-2026;Confirmer séquence demain;;1;;;
+1;Garage;Réalisation;Action;Call Bétoniere pour dispo 22 ou 23 juin;Fait;JD;;15-6-2026;15-6-2026;;;0;;;
+1;Garage;Réalisation;Action;Couler dalle béton;Fait;JD + Yves + Max;;22-6-2026;22-6-2026;🚫 Disponibilité bétonnière 22 ou 23 ?;Sedule Betoniere;0.5;;;A trois ou a 4 ? Dans budget prevu 3
+1;Garage;Finitions;Action;Polissage dalle béton;Fait;JD;;22-6-2026;22-6-2026;Après coulée;Sedule Betoniere;0.5;;;Polyssage et finition du beton: as tu dis 1 gars au meeting?
+1;Balcon 2e;Pre-Prod;Action;Prendre Couleur du mortier ;Fait;JD;;22-6-2026;22-6-2026;;;;;;
+1;Balcon 2e;Pre-Prod;Action;réparé trailer Max;Fait;max;;22-6-2026;23-6-2026;;;1;;;
+1;Balcon 2e;Pre-Prod;Action;Aller chercher les Echaffaudages;Fait;Max;;22-6-2026;23-6-2026;Reparé trailer;;0.5;;;
+1;Metal;Réalisation;Action;Assemblage Structure Acier;À faire;JD+Yves;;6-7-2026;24-7-2026;;;;;;
+1;Metal;Réalisation;Action;Galvanisation — Corbec (40¢/lb);À faire;JD+Yves;;6-7-2026;24-7-2026;Lead time à confirmer;;0.5;;Corbec;Galvanise le jour meme et on repart avec ? Donc le livreur attends la bas le temps du process ou doit aller rechercher
+1;Metal;Pre-Prod;achat;Commander acier — Acier Picard;À faire;JD;6-7-2026;9-7-2026;9-7-2026;;;;;Acier Picard;
+1;Metal;Réalisation;action;Couper Acier avec Liste de coupe;À faire;JD+Yves;;6-7-2026;24-7-2026;;;;;;
+1;Metal;Pre-Prod;action;Ajustement de la liste de coupe;À faire;JD;;6-7-2026;24-7-2026;;;;;;
+1;Metal;Réalisation;Logistique;Corbec a Mariana;À faire;JD;;17-7-2026;17-7-2026;;;;;;
+1;Metal;Réalisation;Logistique;Chez JD a Corbec;À faire;Max;27-7-2026;13-7-2026;13-7-2026;Trailer;;;;;
+2;Balcon 2e;Démolition;Action;Démolition balcon 2e étage;À faire;JD + Yves;;27-7-2026;27-7-2026;;;1;;;Le locataire a-t-il une autre entré ?
+2;Balcon 2e;Pre-Prod;Achat;Béton en sac;À faire;JD + Yves + Max;27-7-2026;;;;;5;pour les sonotubes, 0,60 pied3 chaque;Canac;
+2;Balcon 2e;Démolition;Action;Coulée Beton Sonotube;À faire;JD + Yves + Max;;27-7-2026;27-7-2026;;;;;;
+2;Balcon 2e;Démolition;Action;Reparation de la brique;À faire;JD + Yves + Max;;27-7-2026;27-7-2026;;;;;;
+2;Balcon 2e;Démolition;Action;Sonotube pour Support Balcon 2e ;À faire;JD + Yves + Max;;27-7-2026;27-7-2026;Réserver Équipement LAV (1 sem. avant);Location Terriere Sonotube;;;;
+2;Balcon 2e;Démolition;Action;Vendre le metal;À faire;;;27-7-2026;27-7-2026;;;;;AIM;Trailer Max sufisant ? 
+2;Balcon 2e;Démolition;Action;Apporter Trailer Max;À faire;Max;;27-7-2026;27-7-2026;;;;;;
+2;Balcon 2e;Pre-Prod;Logistique;Livraison des Echaffauds ;Fait;max;27-7-2026;27-7-2026;27-7-2026;;;0.5;;;
+2;Balcon Gen;Démolition;Location;Réserver conteneur Express Bac;Fait;Max;27-7-2026;20-7-2026;20-7-2026;Client doit s'en occuper;;;;express bac;Combien temps a veux payer le conteneur sur le site & a-t-on soumissionné ailleur que express bac ? 
+2;Balcon 2e;Réalisation;Action;Structure bois balcon 2e;À faire;JD + Yves + Max;;28-7-2026;28-7-2026;;;1;;;
+2;Balcon 2e;Réalisation;Action;Installation colonnes Acier Galvaniser;À faire;Max, Yves, JD;;28-7-2026;28-7-2026;🚫 Dépend Corbec + preprod;Preprod Soudure;;;;
+2;Balcon 2e;Pre-Prod;Achat;lame saw all à métal;À faire;JD + Yves + Max;27-7-2026;;;;;1;;Premier tool;
+2;Balcon 2e;Pre-Prod;Achat;Mortier Blanc;À faire;JD + Yves + Max;27-7-2026;;;;;1;;Maconnex;
+2;Balcon 2e;Pre-Prod;Achat;Lame grinder;À faire;JD + Yves + Max;27-7-2026;;;;;1;;Canadian tire;
+2;Balcon 2e;Pre-Prod;Achat;Sonotube;À faire;JD + Yves + Max;27-7-2026;;;;;1;"6""";Canac;
+2;Balcon 2e;Pre-Prod;Achat;3/4 net;À faire;JD + Yves + Max;27-7-2026;;;;;1;;Canac;
+2;Balcon 2e;Pre-Prod;Achat;Boite de clou;À faire;JD + Yves + Max;27-7-2026;;;;;1;barre pour fusil;Canac;
+2;Balcon 2e;Pre-Prod;Achat;2x10 8';À faire;JD + Yves + Max;27-7-2026;;;;;9;Solive balcon 2e;Canac;
+2;Balcon 2e;Pre-Prod;Achat;2x10 12';À faire;JD + Yves + Max;27-7-2026;;;;;3;Solive de rive et entretoise;Canac;
+2;Balcon 2e;Pre-Prod;Achat;Fourrure 10';À faire;JD + Yves + Max;27-7-2026;;;;;6;Fond de clouage soffite;Canac;
+2;Balcon 2e;Pre-Prod;Achat;Ply 3/4 ;À faire;JD + Yves + Max;27-7-2026;;;;;11;335 pi carré;Canac;
+2;Balcon 2e;Pre-Prod;Achat;Ply 1/2;À faire;JD + Yves + Max;27-7-2026;;;;;11;335 pi carré;Canac;
+2;Balcon 2e;Pre-Prod;Achat;ancrage 1/2 à béton;À faire;JD + Yves + Max;27-7-2026;;;;;4;boite de 15;Canac;
+2;Balcon 2e;Pre-Prod;Location;Location Terriere Sonotube;Fait;max;;20-6-2026;20-6-2026;;;0;;Simplex;
+3;Balcon RDC;Réalisation;Action;Structure bois balcon RDC;À faire;max yves jd;;31-7-2026;31-7-2026;;;1;;;
+3;Balcon RDC;Démolition;Action;Démolition balcon RDC (toit garage);À faire;JD + Yves Max;;29-7-2026;29-7-2026;;;1;;;
+3;Balcon RDC;Pre-Prod;Logistique;livraison Bois;À faire;Max;27-7-2026;;;;;;;;Peut-on se faire livrer avec un compte
+3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 24';À faire;JD;29-7-2026;;;;;2;;Canac;
+3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 12';À faire;JD + Yves + Max;29-7-2026;;;;;2;au moins 11;Canac;
+3;Balcon RDC;Pre-Prod;Achat;Poutrelle en i 9 1/2 24';À faire;JD + Yves + Max;29-7-2026;;;;;9;au moins 24';Canac;
+3;Balcon RDC;Pre-Prod;Achat;Poutrelle en i 9 1/2 16';À faire;JD + Yves + Max;29-7-2026;;;;;2;;Canac;
+3;Balcon RDC;Pre-Prod;Achat;vis structurale;À faire;JD + Yves + Max;29-7-2026;;;;;1;pour les étriers;Canac;
+3;Balcon RDC;Pre-Prod;Achat;étrier;À faire;JD + Yves + Max;29-7-2026;;;;;18;pour les poutrelle en i ;Canac;
+3;Balcon RDC;Pre-Prod;Achat;boite de vis traité;À faire;JD + Yves + Max;29-7-2026;;;;;2;2 po;Canac;
+3;Balcon RDC;Pre-Prod;Achat;2x 12 10';À faire;JD + Yves + Max;29-7-2026;;;;;1;limon escalier RDC;Canac;
+3;Balcon RDC;Pre-Prod;Achat;"Noue 6""";À faire;JD + Yves + Max;29-7-2026;;;;;5;étenchiité balcon contre le mur;Canac;
+3;Balcon RDC;Démolition;Location;Location Scie a Beton Simplex ;Fait;Max;;20-6-2026;20-6-2026;;;;;Simplex;
+4;Fibre de verre;Finitions;Action;Préparation surface — Bondo;À faire;JD + Yves + Max + Marc;;1-8-2026;12-8-2026;Après structure bois;;;;;
+4;Fibre de verre;Finitions;Action;Application fibre de verre (4 jours);À faire;JD + Yves + Max + Marc;;1-8-2026;12-8-2026;Météo sensible — prévoir abri;;;;;
+4;Fibre de verre;Pre-Prod;Achat;Commander ensemble fibre 350 pi² ;À faire;JD + Yves + Max;1-8-2026;;;;;1;350 pied carré;Lab. St-Antoine;Doit-on commander d'avance ?
+4;Fibre de verre;Pre-Prod;Achat;Bondo ;À faire;JD + Yves + Max;1-8-2026;;;;;8;préparation de surface;canadian tire;
+4;Fibre de verre;Pre-Prod;Achat;Combinaison de peintre;À faire;JD + Yves + Max;1-8-2026;;;;;8;;canac;
+4;Fibre de verre;Pre-Prod;Achat;gant L nitrile;À faire;JD + Yves + Max;1-8-2026;;;;;2;;canac;
+4;Fibre de verre;Pre-Prod;Achat;bâche 8x10;À faire;JD + Yves + Max;1-8-2026;;;;;5;;canac;
+4;Fibre de verre;Pre-Prod;Achat;bâche 24x36;À faire;JD + Yves + Max;1-8-2026;;;;;1;Pour abris;canadian rire;
+5;Finitions;Finitions;Action;Installation clôtures métalliques galvanisées;À faire;JD + Jeff;;13-8-2026;28-8-2026;;;;;;
+5;Finitions;Finitions;Action;Installation marches (21 marches — 2x10);À faire;JD + Yves + +1;;13-8-2026;28-8-2026;;;;;;
+5;Finitions ;Finitions;Action;Mur intimité (1x6);À faire;JD + Yves + +1;;13-8-2026;28-8-2026;;;;;;
 5;Finitions;Pre-Prod;Achat;Soffite ;À faire;JD + Yves + Max;À Valider;;;Valider couleur avant commande;;;Valider couleur;canac;
 5;Finitions;Pre-Prod;Achat;Silicone + calfeutrage;À faire;JD + Yves + Max;À Valider;;;Valider couleur;;;;canac;
 5;Finitions;Pre-Prod;Achat;1x6x12;À faire;JD + Yves + Max;À Valider;;;;;18;;canac;
