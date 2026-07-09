@@ -595,6 +595,28 @@ async function init() {
             <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-top:2px">Non payé</div>
           </div>
         </div>
+        ${(() => {
+          const byQui = {};
+          DEPENSES.forEach(d => {
+            if (!d.qui || d.qui === '—') return;
+            const nonPaye = (d.paiement||'').toLowerCase().includes('non');
+            if (!nonPaye) return;
+            if (!byQui[d.qui]) byQui[d.qui] = 0;
+            byQui[d.qui] += (d.montant || 0);
+          });
+          const entries = Object.entries(byQui).filter(([,v]) => v > 0);
+          if (!entries.length) return '';
+          return `<div style="margin-bottom:14px;">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:7px">À rembourser</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;">
+              ${entries.map(([nom, total]) => `
+                <div style="background:var(--canvas);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;text-align:center;">
+                  <div style="font-size:14px;font-weight:700;color:var(--ink);font-family:'DM Mono',monospace">${total.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $</div>
+                  <div style="font-size:11px;color:var(--ink-soft);margin-top:3px;font-weight:600">${nom}</div>
+                </div>`).join('')}
+            </div>
+          </div>`;
+        })()}
         <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:8px;padding:5px 0;border-bottom:2px solid var(--rule);margin-bottom:2px;">
           <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Dépense</span>
           <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Qui</span>
