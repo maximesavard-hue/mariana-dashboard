@@ -327,6 +327,13 @@ function fmtDate(s) {
 }
 function parseDate(s) {
   if (!s || s === 'À Valider') return null;
+  const parts = s.split('-');
+  if (parts.length === 3) {
+    const iso = parts[0].length === 4
+      ? `${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}`
+      : `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+    const d = new Date(iso); return isNaN(d) ? null : d;
+  }
   const d = new Date(s); return isNaN(d) ? null : d;
 }
 function statCls(s) {
