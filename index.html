@@ -124,25 +124,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--canvas); color: var
 .s-valider { background: var(--orange-soft);color: var(--orange); }
 .s-annule  { background: var(--grey-soft);  color: var(--grey); }
 
-/* ACHATS TABLE */
-.achats-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 10px; overflow: hidden; border: 1px solid var(--rule); }
-.achats-table thead th {
-  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--ink-muted); background: var(--canvas); padding: 9px 14px;
-  border-bottom: 1px solid var(--rule); text-align: left;
-}
-.achats-table tbody td { font-size: 11px; padding: 9px 14px; border-bottom: 1px solid var(--rule); color: var(--ink); }
-.achats-table tbody tr:last-child td { border-bottom: none; }
-.achats-table tbody tr:hover td { background: var(--canvas); }
-.date-badge {
-  display: inline-block; padding: 2px 8px; background: var(--blue-soft);
-  color: var(--blue); border-radius: 99px; font-size: 10px;
-  font-family: 'DM Mono', monospace; font-weight: 600;
-}
-.date-badge.valider { background: var(--orange-soft); color: var(--orange); }
-.fournisseur { font-size: 10px; color: var(--ink-muted); }
-.qty-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-soft); text-align: right; }
-
 /* BUDGET */
 .budget-card {
   background: var(--white); border: 1px solid var(--rule); border-radius: 12px;
@@ -189,10 +170,6 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-mu
 
   /* Budget */
   .budget-amounts { grid-template-columns: 1fr 1fr; }
-
-  /* Table achats : masquer colonne Zone */
-  .achats-table thead th:nth-child(2),
-  .achats-table tbody td:nth-child(2) { display: none; }
 }
 </style>
 </head>
@@ -260,18 +237,8 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--ink-mu
   <div class="zones" id="zonesContainer"></div>
 
   <!-- LISTE D'ACHAT -->
-  <div class="sec-head">Liste d'achats — par date butoire</div>
-  <table class="achats-table" id="achatsTable">
-    <thead>
-      <tr>
-        <th>Date butoire</th>
-        <th>Zone</th>
-        <th>Article</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tbody id="achatsBody"></tbody>
-  </table>
+  <div class="sec-head">Liste d'achats — par zone</div>
+  <div class="zones" id="achatsContainer"></div>
 
   <div class="legend">
     <div class="leg-title">Légende</div>
@@ -320,13 +287,22 @@ function parseCSV(text) {
 
 // ── HELPERS (globaux) ──
 const MOIS = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+function excelSerialToDate(n) {
+  const d = new Date(Date.UTC(1899, 11, 30) + n * 86400000);
+  return isNaN(d) ? null : d;
+}
 function fmtDate(s) {
   if (!s || s === 'À Valider') return s || '';
+  if (/^\d+$/.test(s)) {
+    const d = excelSerialToDate(Number(s));
+    return d ? `${d.getUTCDate()} ${MOIS[d.getUTCMonth()]}` : s;
+  }
   const d = new Date(s); if (isNaN(d)) return s;
   return `${d.getDate()} ${MOIS[d.getMonth()]}`;
 }
 function parseDate(s) {
   if (!s || s === 'À Valider') return null;
+  if (/^\d+$/.test(s)) return excelSerialToDate(Number(s));
   const parts = s.split('-');
   if (parts.length === 3) {
     const iso = parts[0].length === 4
@@ -552,34 +528,58 @@ async function init() {
 
   renderZones(() => true);
 
-  // ── Liste d'achats ──
-  const achats = DATA
-    .filter(t => ['achat','location'].includes((t.type||'').toLowerCase()) && t.dateButoire)
-    .sort((a,b) => {
-      const da = parseDate(a.dateButoire), db = parseDate(b.dateButoire);
-      if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
-      return da - db;
-    });
-  const tbody = document.getElementById('achatsBody');
-  let lastDate = '';
-  for (const a of achats) {
-    const dateStr = a.dateButoire;
-    const isValider = dateStr === 'À Valider';
-    const displayDate = isValider ? 'À valider' : fmtDate(dateStr);
-    const showDate = dateStr !== lastDate;
-    lastDate = dateStr;
-    const typeLabel = a.type === 'location' ? '📦 Location' : '🛒 Achat';
-    const typeBg = a.type === 'location' ? 'var(--orange-soft)' : 'var(--blue-soft)';
-    const typeColor = a.type === 'location' ? 'var(--orange)' : 'var(--blue)';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${showDate ? `<span class="date-badge ${isValider?'valider':''}">${displayDate}</span>` : ''}</td>
-      <td>${a.zone}</td>
-      <td>${a.tache}</td>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;background:${typeBg};color:${typeColor}">${typeLabel}</span></td>
-    `;
-    tbody.appendChild(tr);
+  // ── Liste d'achats — par zone (même format que Phases de réalisation) ──
+  function renderAchatZones() {
+    const container = document.getElementById('achatsContainer');
+    container.innerHTML = '';
+    let idx = 0;
+    for (const zone of zoneOrder) {
+      const allTasks = zoneMap[zone];
+      const achatTasks = allTasks.filter(t => ['achat','location'].includes((t.type||'').toLowerCase()));
+      if (!achatTasks.length) continue;
+      idx++;
+      const id = `a${idx}`;
+      const zs = zoneStatut(achatTasks);
+      const stepNum = allTasks[0]?.step || '?';
+      const faitCount = achatTasks.filter(t => statCls(t.statut) === 's-fait').length;
+      const sorted = [...achatTasks].sort((a,b) => {
+        const da = parseDate(a.dateButoire), db = parseDate(b.dateButoire);
+        if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+        return da - db;
+      });
+      const block = document.createElement('div');
+      block.className = 'zone-block';
+      block.innerHTML = `
+        <div class="zone-hdr" onclick="toggleZ('${id}')">
+          <div class="zone-step">S${stepNum}</div>
+          <div class="zone-name"><span class="chev" id="c${id}">▶</span>${zone}</div>
+          <div></div>
+          <div>${statPill(zs)}</div>
+          <div class="zone-count">${faitCount}/${achatTasks.length}</div>
+        </div>
+        <div class="zone-tasks" id="${id}">
+          <div class="tasks-hdr">
+            <div class="th">Article</div>
+            <div class="th c">Statut</div>
+            <div class="th c">Date butoire</div>
+            <div class="th c">Fournisseur</div>
+          </div>
+          ${sorted.map(t => {
+            const dateStr = t.dateButoire === 'À Valider' ? 'À valider' : (fmtDate(t.dateButoire) || '—');
+            const typeIcon = (t.type||'').toLowerCase() === 'location' ? '📦' : '🛒';
+            return `
+            <div class="task-row">
+              <div class="task-n">${typeIcon} ${t.tache}${t.qty ? ` <span style="color:var(--ink-muted);font-size:10px">×${t.qty}</span>` : ''}</div>
+              <div class="task-r">${statPill(t.statut)}</div>
+              <div class="task-d">${dateStr}</div>
+              <div class="task-d">${t.fournisseur || '—'}</div>
+            </div>`;
+          }).join('')}
+        </div>`;
+      container.appendChild(block);
+    }
   }
+  renderAchatZones();
 
   // ── Budget ──
   const pctBudget = Math.min(Math.round(REEL / BUDGET * 100), 100);
@@ -637,20 +637,20 @@ async function init() {
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;">
               ${entries.map(([nom, v]) => `
                 <div style="background:var(--canvas);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;text-align:center;">
-                  <div style="font-size:14px;font-weight:700;color:var(--ink);font-family:'DM Mono',monospace">${(v.cash+v.depense).toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $</div>
-                  <div style="font-size:11px;color:var(--ink-soft);margin-top:3px;font-weight:600">${nom}</div>
-                  ${v.cash > 0 ? `<div style="font-size:9px;color:var(--grey);margin-top:2px">💵 ${v.cash.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $ cash</div>` : ''}
-                  ${v.depense > 0 ? `<div style="font-size:9px;color:var(--blue);margin-top:1px">💳 ${v.depense.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $ interac</div>` : ''}
+                  <div style="font-size:20px;font-weight:700;color:var(--ink);font-family:'DM Mono',monospace">${(v.cash+v.depense).toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $</div>
+                  <div style="font-size:12px;color:var(--ink-soft);margin-top:3px;font-weight:600">${nom}</div>
+                  ${v.cash > 0 ? `<div style="font-size:13px;font-weight:600;color:var(--grey);margin-top:4px">💵 ${v.cash.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $ cash</div>` : ''}
+                  ${v.depense > 0 ? `<div style="font-size:13px;font-weight:600;color:var(--blue);margin-top:2px">💳 ${v.depense.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $ interac</div>` : ''}
                 </div>`).join('')}
             </div>
           </div>`;
         })()}
-        <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:8px;padding:5px 0;border-bottom:2px solid var(--rule);margin-bottom:2px;">
-          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Dépense</span>
-          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Mode</span>
-          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Qui</span>
-          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Statut</span>
-          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);text-align:right">Montant</span>
+        <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;padding:6px 0;border-bottom:2px solid var(--rule);margin-bottom:2px;">
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Dépense</span>
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Mode</span>
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Qui</span>
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Statut</span>
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);text-align:right">Montant</span>
         </div>
         ${DEPENSES.map(d => {
           const paye = isPaye(d);
@@ -660,12 +660,12 @@ async function init() {
           const montantColor = d.montant === null ? 'var(--ink-muted)' : d.montant < 0 ? 'var(--green)' : 'var(--ink)';
           const modeLow = (d.mode||'').toLowerCase();
           const modeLabel = modeLow === 'cash' ? '💵' : modeLow.includes('dep') ? '💳' : d.mode || '—';
-          return `<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--rule);font-size:11px;">
+          return `<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--rule);font-size:13px;">
             <span style="color:var(--ink-soft)">${d.desc || '—'}</span>
-            <span style="color:var(--ink-muted);font-size:12px">${modeLabel}</span>
-            <span style="color:var(--ink-muted);font-size:10px">${d.qui}</span>
-            <span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:9px;font-weight:600;${pillStyle}">${pillLabel}</span>
-            <span style="font-family:'DM Mono',monospace;font-weight:600;color:${montantColor};text-align:right">${montantFmt}</span>
+            <span style="color:var(--ink-muted);font-size:15px">${modeLabel}</span>
+            <span style="color:var(--ink-muted);font-size:12px">${d.qui}</span>
+            <span style="display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;${pillStyle}">${pillLabel}</span>
+            <span style="font-family:'DM Mono',monospace;font-weight:700;font-size:14px;color:${montantColor};text-align:right">${montantFmt}</span>
           </div>`;
         }).join('')}`;
     }
