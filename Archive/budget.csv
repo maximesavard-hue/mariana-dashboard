@@ -1,18 +1,16 @@
 ﻿Depense Reel;Montant;Qui;Paiement;mode
-canac 0-34; 64,67  $ ;Max;Non Payé;Depense
-remb. Canac 0-34; (47,42) $ ;Max;Non Payé;Depense
-2x4x10; 5,05  $ ;Max;Non Payé;Depense
-LAV; 215,00  $ ;Max;Non Payé;Depense
-Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense
-Hrs Maxime; 1 473,75  $ ;Max;Non Payé;Cash
-Truel Magnesie (simplex); 53,07  $ ;Max;Non Payé;Depense
-Tapeuse 19 po (Simplex; 48,32  $ ;Max;Non Payé;Depense
-Hrs Yves; 945,00  $ ;Yves;Non Payé;Cash
-Hrs JD; 1 451,25  $ ;JD;Non Payé;Cash
-Conteneur Express Bac; 546,25  $ ;Mariana;Payé;Depense
+Hrs Yves;a venir;Yves;Non Payé;Cash
+Hrs Maxime;2058,75;Max;Non Payé;Cash
+Hrs JD après déduction de dépense;3930,53;JD;Non Payé;Cash
+Beton sur mesure;1508,47;JD;Payé;Depense
+Truel Magnesie (simplex);53,07;MFI;Non Payé;Depense
+Tapeuse 19 po (Simplex);48,32;MFI;Non Payé;Depense
+Conteneur Express Bac;546,25;Mariana;Payé;Depense
 Métaux;4366,63;Mariana;Payé;Depense
 outil pour Metal;1285,57;JD;Payé;Depense
-Canac 2012900466; 3 584,85  $ ;Yves;Non Payé;Depense
-sonotube et beton (385004300);69,85;Max;Non Payé;Depense
-etrier poutrel I (508371332);81,75;Max;Non Payé;Depense
+Canac 2012900466;3779,42;Yves;Non Payé;Depense
 clou et foam anti humidité;a venir;Max;Non Payé;Depense
+home depot (QuincaillerieJD);196,98;JD;Non Payé;Depense
+home depot (QuincaillerieJD);242,39;JD;Non Payé;Depense
+Tarière portative;98,56;Mariana;Non Payé;Depense
+Matériaux et Location (ER-00229);808,19;Max;Non Payé;Depense
