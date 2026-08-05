@@ -28,7 +28,7 @@
 2;Balcon 2e;Pre-Prod;Logistique;Livraison des Echaffauds ;Fait;max;46230;2026-07-27;2026-07-27;;;0,5;;;
 2;Balcon Gen;Démolition;Location;Réserver conteneur Express Bac;Fait;Max;46230;2026-07-20;2026-07-20;Client doit s'en occuper;;;;express bac;Combien temps a veux payer le conteneur sur le site & a-t-on soumissionné ailleur que express bac ? 
 2;Balcon 2e;Réalisation;Action;Structure bois balcon 2e;Fait;JD + Yves + Max;;2026-07-28;2026-07-28;;;1;;;
-2;Balcon 2e;Réalisation;Action;Installation colonnes Acier Galvaniser;À faire;Max, Yves, JD;;2026-07-28;2026-07-28;🚫 Dépend Corbec + preprod;Preprod Soudure;;;;
+2;Balcon 2e;Réalisation;Action;Installation colonnes Acier Galvaniser;Fait;Max, Yves, JD;;2026-07-28;2026-07-28;🚫 Dépend Corbec + preprod;Preprod Soudure;;;;
 2;Balcon 2e;Pre-Prod;Achat;lame saw all à métal;Fait;JD + Yves + Max;46230;;;;;1;;Premier tool;
 2;Balcon 2e;Pre-Prod;Achat;Mortier Blanc;Fait;JD + Yves + Max;46230;;;;;1;;Maconnex;
 2;Balcon 2e;Pre-Prod;Achat;Lame grinder;Fait;JD + Yves + Max;46230;;;;;1;;Canadian tire;
@@ -42,7 +42,7 @@
 2;Balcon 2e;Pre-Prod;Achat;Ply 1/2;Fait;JD + Yves + Max;46230;;;;;11;335 pi carré;Canac;
 2;Balcon 2e;Pre-Prod;Achat;ancrage 1/2 à béton;Fait;JD + Yves + Max;46230;;;;;4;boite de 15;Canac;
 2;Balcon 2e;Pre-Prod;Location;Location Terriere Sonotube;Fait;max;;2026-06-20;2026-06-20;;;0;;Simplex;
-3;Balcon RDC;Réalisation;Action;Structure bois balcon RDC;À faire;max yves jd;;2026-07-31;2026-07-31;;;1;;;
+3;Balcon RDC;Réalisation;Action;Structure bois balcon RDC;Fait;max yves jd;;2026-07-31;2026-07-31;;;1;;;
 3;Balcon RDC;Démolition;Action;Démolition balcon RDC (toit garage);Fait;JD + Yves Max;;2026-07-29;2026-07-29;;;1;;;
 3;Balcon RDC;Pre-Prod;Logistique;livraison Bois;Fait;Max;46230;2026-07-27;2026-07-27;;;;;;Peut-on se faire livrer avec un compte
 3;Balcon RDC;Pre-Prod;Achat;LVL 9 1/2 24';Fait;JD;46232;;;;;2;;Canac;
