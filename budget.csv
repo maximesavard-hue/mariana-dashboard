@@ -1,17 +1,18 @@
-﻿Depense Reel;Montant;Qui;Paiement;mode
-Hrs Yves;767,5;Yves;Non Payé;Cash
-Hrs Maxime;823,75;Max;Non Payé;Cash
-Hrs JD après déduction de dépense;3156,78;JD;Non Payé;Cash
-Beton sur mesure;1508,47;JD;Payé;Depense
-Truel Magnesie (simplex);53,07;MFI;Non Payé;Depense
-Tapeuse 19 po (Simplex);48,32;MFI;Non Payé;Depense
-Conteneur Express Bac;546,25;Mariana;Payé;Depense
-Métaux;4366,63;Mariana;Payé;Depense
-outil pour Metal;1285,57;JD;Payé;Depense
-Canac 2012900466;3779,42;Yves;Payé;Depense
-clou et foam anti humidité;a venir;Max;Non Payé;Depense
-home depot (QuincaillerieJD);196,98;JD;Payé;Depense
-home depot (QuincaillerieJD);242,39;JD;Payé;Depense
-Tarière portative;98,56;Mariana;Non Payé;Depense
-Matériaux et Location (ER-00229);808,19;Max;Payé;Depense
-Matériaux;482,01;Max;Non Payé;Depense
+﻿Depense Reel; Montant ;Qui;Paiement;mode
+Hrs Yves; 767,50  $ ;Yves;Non Payé;Cash
+Hrs Maxime; 823,75  $ ;Max;Non Payé;Cash
+hrs marc; 1 863,75  $ ;Marc;Non Payé;Cash
+Hrs JD après déduction de dépense; 3 156,78  $ ;JD;Non Payé;Cash
+Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense
+Truel Magnesie (simplex); 53,07  $ ;MFI;Non Payé;Depense
+Tapeuse 19 po (Simplex); 48,32  $ ;MFI;Non Payé;Depense
+Conteneur Express Bac; 546,25  $ ;Mariana;Payé;Depense
+Métaux; 4 366,63  $ ;Mariana;Payé;Depense
+outil pour Metal; 1 285,57  $ ;JD;Payé;Depense
+Canac 2012900466; 3 779,42  $ ;Yves;Payé;Depense
+clou et foam anti humidité; a venir ;Max;Non Payé;Depense
+home depot (QuincaillerieJD); 196,98  $ ;JD;Payé;Depense
+home depot (QuincaillerieJD); 242,39  $ ;JD;Payé;Depense
+Tarière portative; 98,56  $ ;Mariana;Non Payé;Depense
+Matériaux et Location (ER-00229); 808,19  $ ;Max;Payé;Depense
+Matériaux; 482,01  $ ;Max;Non Payé;Depense
