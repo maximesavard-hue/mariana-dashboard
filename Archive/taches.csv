@@ -57,20 +57,20 @@
 3;Balcon RDC;Démolition;Location;Location Scie a Beton Simplex ;Fait;Max;;2026-06-20;2026-06-20;;;;;Simplex;
 4;Fibre de verre;Finitions;Action;Préparation surface — Bondo;À faire;JD + Yves + Max + Marc;;2026-08-01;2026-08-12;Après structure bois;;;;;
 4;Fibre de verre;Finitions;Action;Application fibre de verre (4 jours);À faire;JD + Yves + Max + Marc;;2026-08-01;2026-08-12;Météo sensible — prévoir abri;;;;;
-4;Fibre de verre;Pre-Prod;Achat;Commander ensemble fibre 350 pi² ;À faire;JD + Yves + Max;46235;;;;;1;350 pied carré;Lab. St-Antoine;Doit-on commander d'avance ?
+4;Fibre de verre;Pre-Prod;Achat;Commander ensemble fibre 370 pi² ;À faire;JD + Yves + Max;46235;;;;;1;350 pied carré;Lab. St-Antoine;Doit-on commander d'avance ?
 4;Fibre de verre;Pre-Prod;Achat;Bondo ;À faire;JD + Yves + Max;46235;;;;;8;préparation de surface;canadian tire;
 4;Fibre de verre;Pre-Prod;Achat;Combinaison de peintre;À faire;JD + Yves + Max;46235;;;;;8;;canac;
 4;Fibre de verre;Pre-Prod;Achat;gant L nitrile;À faire;JD + Yves + Max;46235;;;;;2;;canac;
-4;Fibre de verre;Pre-Prod;Achat;bâche 8x10;À faire;JD + Yves + Max;46235;;;;;5;;canac;
-4;Fibre de verre;Pre-Prod;Achat;bâche 24x36;À faire;JD + Yves + Max;46235;;;;;1;Pour abris;canadian rire;
+4;Fibre de verre;Pre-Prod;Achat;bâche 8x10;Fait;JD + Yves + Max;46235;;;;;5;;canac;
+4;Fibre de verre;Pre-Prod;Achat;bâche 24x36;Fait;JD + Yves + Max;46235;;;;;1;Pour abris;canadian rire;
 5;Finitions;Finitions;Action;Installation clôtures métalliques galvanisées;À faire;JD + Jeff;;2026-08-13;2026-08-28;;;;;;
 5;Finitions;Finitions;Action;Installation marches (21 marches — 2x10);À faire;JD + Yves + +1;;2026-08-13;2026-08-28;;;;;;
 5;Finitions ;Finitions;Action;Mur intimité (1x6);À faire;JD + Yves + +1;;2026-08-13;2026-08-28;;;;;;
-5;Finitions;Pre-Prod;Achat;Soffite ;À faire;JD + Yves + Max;À Valider;;;Valider couleur avant commande;;;Valider couleur;canac;
+5;Finitions;Pre-Prod;Achat;Soffite + J;À faire;JD + Yves + Max;À Valider;;;Valider couleur avant commande;;;Valider couleur;canac;
 5;Finitions;Pre-Prod;Achat;Silicone + calfeutrage;À faire;JD + Yves + Max;À Valider;;;Valider couleur;;;;canac;
-5;Finitions;Pre-Prod;Achat;1x6x12;À faire;JD + Yves + Max;À Valider;;;;;18;;canac;
-5;Finitions;Pre-Prod;Achat;tire fond 2 1/2;À faire;JD + Yves + Max;À Valider;;;;;56;;canac;
-5;Finitions;Pre-Prod;Achat;vis de couleur;À faire;JD + Yves + Max;À Valider;;;;;700;;canac;
+5;Finitions;Pre-Prod;Achat;1x3 12' pour RDC;À faire;JD + Yves + Max;À Valider;;;;;18;;canac;
+5;Finitions;Pre-Prod;Achat;tire fond 2 1/2;Fait;JD + Yves + Max;À Valider;;;;;56;;canac;
+5;Finitions;Pre-Prod;Achat;vis de couleur;Fait;JD + Yves + Max;À Valider;;;;;700;;canac;
 5;Finitions;Pre-Prod;Location;Plieuse;À faire;JD + Yves + Max;À Valider;;;;;;;Simplex;Pourquoi ? 
 5;Finitions;Pre-Prod;Location;Coupeuse Alu;À faire;JD + Yves + Max;À Valider;;;;;;;Simplex;Pourquoi?
 5;Finitions;Pre-Prod;Achat;2x10x10;À faire;;À Valider;;;;;7;21 marches;canac;

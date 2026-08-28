@@ -358,6 +358,7 @@ async function init() {
   const DEPENSES = parseCSV(await budgetRes.text()).map(d => ({
     desc: d.desc || Object.values(d)[0] || '',
     qui: d.qui || '—',
+    note: (d.note || '').trim(),
     paiement: (d.paiement || '').trim(),
     mode: (d.mode || d.type || '').trim(),
     montant: (s => {
@@ -594,8 +595,6 @@ async function init() {
       const isNonPaye = d => (d.paiement||'').toLowerCase().includes('non');
       const totalPaye = DEPENSES.filter(isPaye).reduce((s,d) => s + (d.montant||0), 0);
       const totalNonPaye = DEPENSES.filter(isNonPaye).reduce((s,d) => s + (d.montant||0), 0);
-      const totalNonPayeCash = DEPENSES.filter(d => isNonPaye(d) && (d.mode||'').toLowerCase() === 'cash').reduce((s,d) => s + (d.montant||0), 0);
-      const totalNonPayeDepense = DEPENSES.filter(d => isNonPaye(d) && (d.mode||'').toLowerCase().includes('dep')).reduce((s,d) => s + (d.montant||0), 0);
       det.innerHTML = `
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
           <div style="background:var(--green-soft);border-radius:8px;padding:10px 14px;text-align:center;">
@@ -607,47 +606,30 @@ async function init() {
             <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-top:2px">Non payé</div>
           </div>
         </div>
-        ${(totalNonPayeCash > 0 || totalNonPayeDepense > 0) ? `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-          <div style="background:var(--grey-soft);border:1px solid var(--rule);border-radius:8px;padding:10px 14px;text-align:center;">
-            <div style="font-size:14px;font-weight:700;color:var(--grey);font-family:'DM Mono',monospace">${totalNonPayeCash.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $</div>
-            <div style="font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:0.07em;margin-top:2px">💵 Cash (sortir banque)</div>
-          </div>
-          <div style="background:var(--blue-soft);border:1px solid var(--rule);border-radius:8px;padding:10px 14px;text-align:center;">
-            <div style="font-size:14px;font-weight:700;color:var(--blue);font-family:'DM Mono',monospace">${totalNonPayeDepense.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $</div>
-            <div style="font-size:10px;color:var(--blue);text-transform:uppercase;letter-spacing:0.07em;margin-top:2px">💳 Dépenses (Interac OK)</div>
-          </div>
-        </div>` : ''}
         ${(() => {
+          // Reste à payer par personne = somme des lignes Non payé, groupées par « Qui »
           const byQui = {};
           DEPENSES.forEach(d => {
             if (!d.qui || d.qui === '—') return;
             if (!isNonPaye(d)) return;
-            if (!byQui[d.qui]) byQui[d.qui] = {cash:0, depense:0};
-            const isCash = (d.mode||'').toLowerCase() === 'cash';
-            const isDepense = (d.mode||'').toLowerCase().includes('dep');
-            if (isCash) byQui[d.qui].cash += (d.montant || 0);
-            else if (isDepense) byQui[d.qui].depense += (d.montant || 0);
-            else byQui[d.qui].depense += (d.montant || 0);
+            byQui[d.qui] = (byQui[d.qui] || 0) + (d.montant || 0);
           });
-          const entries = Object.entries(byQui).filter(([,v]) => v.cash + v.depense > 0);
+          const entries = Object.entries(byQui).filter(([,v]) => v > 0).sort((a,b) => b[1] - a[1]);
           if (!entries.length) return '';
+          const f = n => n.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2});
           return `<div style="margin-bottom:14px;">
-            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:7px">À rembourser</div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:7px">Reste à payer par personne</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;">
               ${entries.map(([nom, v]) => `
-                <div style="background:var(--canvas);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;text-align:center;">
-                  <div style="font-size:20px;font-weight:700;color:var(--ink);font-family:'DM Mono',monospace">${(v.cash+v.depense).toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $</div>
-                  <div style="font-size:12px;color:var(--ink-soft);margin-top:3px;font-weight:600">${nom}</div>
-                  ${v.cash > 0 ? `<div style="font-size:13px;font-weight:600;color:var(--grey);margin-top:4px">💵 ${v.cash.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $ cash</div>` : ''}
-                  ${v.depense > 0 ? `<div style="font-size:13px;font-weight:600;color:var(--blue);margin-top:2px">💳 ${v.depense.toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})} $ interac</div>` : ''}
+                <div style="background:var(--canvas);border:1px solid var(--rule);border-radius:8px;padding:12px;text-align:center;">
+                  <div style="font-size:20px;font-weight:700;color:var(--amber);font-family:'DM Mono',monospace">${f(v)} $</div>
+                  <div style="font-size:12px;color:var(--ink-soft);margin-top:4px;font-weight:600">${nom}</div>
                 </div>`).join('')}
             </div>
           </div>`;
         })()}
-        <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;padding:6px 0;border-bottom:2px solid var(--rule);margin-bottom:2px;">
+        <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:10px;padding:6px 0;border-bottom:2px solid var(--rule);margin-bottom:2px;">
           <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Dépense</span>
-          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Mode</span>
           <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Qui</span>
           <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted)">Statut</span>
           <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);text-align:right">Montant</span>
@@ -658,11 +640,8 @@ async function init() {
           const pillLabel = paye ? 'Payé' : (d.paiement || '—');
           const montantFmt = d.montant === null ? 'À venir' : d.montant < 0 ? '(' + Math.abs(d.montant).toFixed(2) + ' $)' : d.montant.toFixed(2) + ' $';
           const montantColor = d.montant === null ? 'var(--ink-muted)' : d.montant < 0 ? 'var(--green)' : 'var(--ink)';
-          const modeLow = (d.mode||'').toLowerCase();
-          const modeLabel = modeLow === 'cash' ? '💵' : modeLow.includes('dep') ? '💳' : d.mode || '—';
-          return `<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--rule);font-size:13px;">
-            <span style="color:var(--ink-soft)">${d.desc || '—'}</span>
-            <span style="color:var(--ink-muted);font-size:15px">${modeLabel}</span>
+          return `<div style="display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--rule);font-size:13px;">
+            <span style="color:var(--ink-soft)">${d.desc || '—'}${d.note ? `<span style="display:block;font-size:11px;color:var(--ink-muted);font-style:italic;margin-top:2px">${d.note}</span>` : ''}</span>
             <span style="color:var(--ink-muted);font-size:12px">${d.qui}</span>
             <span style="display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;${pillStyle}">${pillLabel}</span>
             <span style="font-family:'DM Mono',monospace;font-weight:700;font-size:14px;color:${montantColor};text-align:right">${montantFmt}</span>

@@ -1,18 +1,15 @@
-﻿Depense Reel; Montant ;Qui;Paiement;mode
-Hrs Yves; 767,50  $ ;Yves;Non Payé;Cash
-Hrs Maxime; 823,75  $ ;Max;Non Payé;Cash
-hrs marc; 1 863,75  $ ;Marc;Non Payé;Cash
-Hrs JD après déduction de dépense; 3 156,78  $ ;JD;Non Payé;Cash
-Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense
-Truel Magnesie (simplex); 53,07  $ ;MFI;Non Payé;Depense
-Tapeuse 19 po (Simplex); 48,32  $ ;MFI;Non Payé;Depense
-Conteneur Express Bac; 546,25  $ ;Mariana;Payé;Depense
-Métaux; 4 366,63  $ ;Mariana;Payé;Depense
-outil pour Metal; 1 285,57  $ ;JD;Payé;Depense
-Canac 2012900466; 3 779,42  $ ;Yves;Payé;Depense
-clou et foam anti humidité; a venir ;Max;Non Payé;Depense
-home depot (QuincaillerieJD); 196,98  $ ;JD;Payé;Depense
-home depot (QuincaillerieJD); 242,39  $ ;JD;Payé;Depense
-Tarière portative; 98,56  $ ;Mariana;Non Payé;Depense
-Matériaux et Location (ER-00229); 808,19  $ ;Max;Payé;Depense
-Matériaux; 482,01  $ ;Max;Non Payé;Depense
+﻿Depense Reel; Montant ;Qui;Paiement;mode;Note
+Hrs Yves; 767,50  $ ;Yves;Non Payé;Cash;
+Hrs Maxime celon rapport 2026-08-27; 1 037,81  $ ;Max;Non Payé;Cash;consulter Rapport hrs MS
+hrs marc; 1 863,75  $ ;Marc;Payé;Cash;fibre de verre
+Hrs JD celon rapport 2026-08-16; 9 050,36  $ ;JD;Non Payé;Cash;consulter rapport hrs JD
+Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense;a valider au pres de Mariana et JD
+Truel Magnesie (simplex); 53,07  $ ;MFI;Payé;Depense;
+Tapeuse 19 po (Simplex); 48,32  $ ;MFI;Payé;Depense;
+express bac - Nº DE FACTURE 154896; 546,25  $ ;Mariana;Payé;Depense;directement sur Credit Mariana
+Métaux; 4 366,63  $ ;Mariana;Payé;Depense;
+Canac 2012900466; 3 779,42  $ ;Yves;Payé;Depense;Livraison du bois
+Tarière portative; 98,56  $ ;Mariana;Non Payé;Depense;
+Matériaux et Location (ER-00229); 808,19  $ ;Max;Payé;Depense;
+Matériaux (ER-00230); 590,14  $ ;Max;Non Payé;Depense;
+Lab St-Antoine - Fibre de Verre; 1 899,97  $ ;Yves;Non Payé;Cash;#Facture : 44167
