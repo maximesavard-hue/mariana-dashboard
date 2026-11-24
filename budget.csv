@@ -1,15 +1,21 @@
 ﻿Depense Reel; Montant ;Qui;Paiement;mode;Note
-Hrs Yves; 767,50  $ ;Yves;Non Payé;Cash;
-Hrs Maxime celon rapport 2026-08-27; 1 037,81  $ ;Max;Non Payé;Cash;consulter Rapport hrs MS
+Hrs Yves; 3 324,70  $ ;Yves;Non Payé;Cash;
+Hrs Maxime celon rapport 2026-08-27; (207,19) $ ;Max;Non Payé;Cash;consulter Rapport hrs MS
 hrs marc; 1 863,75  $ ;Marc;Payé;Cash;fibre de verre
-Hrs JD celon rapport 2026-08-16; 9 050,36  $ ;JD;Non Payé;Cash;consulter rapport hrs JD
-Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense;a valider au pres de Mariana et JD
-Truel Magnesie (simplex); 53,07  $ ;MFI;Payé;Depense;
-Tapeuse 19 po (Simplex); 48,32  $ ;MFI;Payé;Depense;
+Hrs & Depense JD celon rapport 2026 09 19; 14 370,94  $ ;JD;Payé;Cash;consulter etat_compte_Mariana_Manzano_20260919_235758-1
+Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense;
+Truel Magnesie (simplex); 53,07  $ ;MFI;Payé;Depense;paiement de facture MF-000003 101.40$
+Tapeuse 19 po (Simplex); 48,32  $ ;MFI;Payé;Depense;paiement de facture MF-000003 101.40$
 express bac - Nº DE FACTURE 154896; 546,25  $ ;Mariana;Payé;Depense;directement sur Credit Mariana
 Métaux; 4 366,63  $ ;Mariana;Payé;Depense;
 Canac 2012900466; 3 779,42  $ ;Yves;Payé;Depense;Livraison du bois
-Tarière portative; 98,56  $ ;Mariana;Non Payé;Depense;
-Matériaux et Location (ER-00229); 808,19  $ ;Max;Payé;Depense;
-Matériaux (ER-00230); 590,14  $ ;Max;Non Payé;Depense;
-Lab St-Antoine - Fibre de Verre; 1 899,97  $ ;Yves;Non Payé;Cash;#Facture : 44167
+Tarière portative; 98,56  $ ;Mariana;Non Payé;Depense;2026-07-27 Facture 210028
+Matériaux et Location (ER-00229); 808,19  $ ;Max;Payé;Depense;virement interact 30 juil
+Matériaux (ER-00230); 590,14  $ ;Max;Payé;Depense;virement interact 02 sept
+Lab St-Antoine - Fibre de Verre; 1 899,97  $ ;Yves;Payé;Cash;#Facture : 44167
+Rapport Depense (ER-00236); 310,73  $ ;Max;payé;Depense;
+Galvalnisation Qc; 1 081,71  $ ;Mariana;Payé;Depense;Facture p000038961
+Galvalnisation Qc; 475,27  $ ;Mariana;Payé;Depense;Facture p000038344
+Galvalnisation Qc; 114,98  $ ;Mariana;Payé;Depense;facture p000039141
+simplex;115,07 $ ;Mariana;Non Payé;Depense;2026-07-31 Facture 212655
+simplex; 149,10  $ ;Mariana;Non Payé;Depense;2026-07-31 Facture 212653 

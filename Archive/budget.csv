@@ -1,6 +1,6 @@
 ﻿Depense Reel; Montant ;Qui;Paiement;mode;Note
 Hrs Yves; 767,50  $ ;Yves;Non Payé;Cash;
-Hrs Maxime; 1 037,81  $ ;Max;Non Payé;Cash;consulter Rapport hrs MS
+Hrs Maxime celon rapport 2026-08-27; 1 037,81  $ ;Max;Non Payé;Cash;consulter Rapport hrs MS
 hrs marc; 1 863,75  $ ;Marc;Payé;Cash;fibre de verre
 Hrs JD celon rapport 2026-08-16; 9 050,36  $ ;JD;Non Payé;Cash;consulter rapport hrs JD
 Beton sur mesure; 1 508,47  $ ;JD;Payé;Depense;a valider au pres de Mariana et JD
@@ -13,6 +13,3 @@ Tarière portative; 98,56  $ ;Mariana;Non Payé;Depense;
 Matériaux et Location (ER-00229); 808,19  $ ;Max;Payé;Depense;
 Matériaux (ER-00230); 590,14  $ ;Max;Non Payé;Depense;
 Lab St-Antoine - Fibre de Verre; 1 899,97  $ ;Yves;Non Payé;Cash;#Facture : 44167
-Remise 2000 ; 2 000,00  $ ;Max;Payé;Cash;remise 6000 /3 cash - 2026-07-31
-Remise 2000 ; 2 000,00  $ ;Yves;Payé;Cash;remise 6000 /3 cash - 2026-07-31
-Remise 2000 ; 2 000,00  $ ;JD;Payé;Cash;remise 6000 /3 cash - 2026-07-31
